@@ -1,28 +1,45 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Main from '../pages/main/Main'
+import Main from '../pages/Main'
+import TableMain from '../pages/table/TableMain'
 import Login from '../pages/login/Login'
 
-import Details from '../pages/main/details/Details'
-Vue.use(Router)
+import TableModule from '../pages/table/details/TableModule'
+import SettingMain from '../pages/setting/SettingMain'
+import OrderManage from '../pages/setting/details/OrderManage'
+Vue.use(Router);
 
 export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/main'
-    },
-    {
-      path: '/main',
-      name: 'Main',
       component: Main,
       children: [
         {
-          path: 'details',
-          component: Details
+          path: '/table',
+          name: 'Table',
+          component: TableMain,
+          children: [
+            {
+              path: 'details',
+              component: TableModule
+            }
+          ]
+        },
+        {
+          path: '/setting',
+          name: 'Setting',
+          component: SettingMain,
+          children: [
+            {
+              path: 'order_manage',
+              component: OrderManage
+            }
+          ]
         }
       ]
     },
+
     {
       path: '/login',
       name: 'Login',

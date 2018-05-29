@@ -1,7 +1,11 @@
-export const routerApi = (state) => {
-  return state.routerApi;
+export const tableRouterApi = (state) => {
+  return state.tableRouterApi;
 };
 
 export const isLoading = (state) => {
   return state.isLoading;
+};
+
+export const routerIn = (state) => {
+  return state.routerIn
 };

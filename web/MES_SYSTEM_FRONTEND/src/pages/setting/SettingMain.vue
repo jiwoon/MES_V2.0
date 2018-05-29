@@ -1,9 +1,8 @@
 <template>
   <div>
     <!--<Header/>-->
-
     <loading v-if="$store.state.isLoading"/>
-    <div class="">
+    <div class="" style="margin-left: 60px;">
       <div class="row main-style" :style="sideBarStyle">
         <transition name="slide">
           <div class="side-bar" v-show="sideBarIsShow">
@@ -21,18 +20,20 @@
 
   </div>
 </template>
-
 <script>
   import Header from '../../components/PageHeader'
-  import SideBar from '../../components/SideBar'
+  import SideBar from './details/comp/SideBar'
   import Loading from '@/components/Loading'
+  import SideSetting from '../../components/SideSetting'
+  import debounce from 'lodash/debounce'
 
   export default {
     name: "Main",
     components: {
       Header,
       SideBar,
-      Loading
+      Loading,
+      SideSetting
     },
     data() {
       return {
@@ -43,10 +44,17 @@
       }
     },
     mounted: function () {
+      let _this = this;
       this.sideBarStyle.height = document.body.scrollHeight + 'px';
-      window.onresize = () => {
+      window.addEventListener('resize', () => {
         this.sideBarStyle.height = document.body.scrollHeight + 'px';
-      };
+      });
+      window.addEventListener('scroll',
+        debounce(() => {
+          this.sideBarStyle.height = document.body.scrollHeight + 'px';
+        }, 400)
+      )
+
     },
     methods: {}
   }

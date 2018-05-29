@@ -8,7 +8,8 @@ Vue.use(Vuex);
 
 const state = {
   isLoading: false,
-  routerApi: 'default'
+  tableRouterApi: 'default',
+  routerIn: 'table'
 };
 
 const store = new Vuex.Store({

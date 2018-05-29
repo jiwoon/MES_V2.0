@@ -74,12 +74,12 @@
         penetrateLib: [
           {
             type: "GpsSMT_TcData",
-            link: "/main/details",
+            link: "/table/details",
             name: "SMT状态"
           },
           {
             type: "GpsTcData",
-            link: "/main/details",
+            link: "/table/details",
             name: "组装情况"
           },
           // {
@@ -92,22 +92,22 @@
         testResultLib: [
           {
             type: "Gps_AutoTest_Result2",
-            link: "/main/details",
+            link: "/table/details",
             name: "SMT功能测试"
           },
           {
             type: "Gps_AutoTest_Result",
-            link: "/main/details",
+            link: "/table/details",
             name: "组装功能测试"
           },
           {
             type: "Gps_CoupleTest_Result",
-            link: "/main/details",
+            link: "/table/details",
             name: "耦合测试"
           },
           {
             type: "Gps_ParamDownload_Result",
-            link: "/main/details",
+            link: "/table/details",
             name: "软件参数下载"
           },
           // {
@@ -119,14 +119,14 @@
         cartonResultLib: [
           {
             type: "Gps_CartonBoxTwenty_Result",
-            link: "/main/details",
+            link: "/table/details",
             name: "卡通结果"
           }
         ],
         operationRecord: [
           {
             type: "Gps_OperRecord",
-            link: "/main/details",
+            link: "/table/details",
             name: "操作记录"
           }
         ],
@@ -134,17 +134,17 @@
         bindResultLib: [
           {
             type: "DataRelative_BAT",
-            link: "/main/details",
+            link: "/table/details",
             name: "电池绑定"
           },
           {
             type: "DataRelative_VIP",
-            link: "/main/details",
+            link: "/table/details",
             name: "VIP绑定"
           },
           {
             type: "DataRelativeSheet",
-            link: "/main/details",
+            link: "/table/details",
             name: "SIM绑定"
           },
           // {
@@ -163,19 +163,19 @@
     },
     computed: {
       ...mapGetters([
-        'routerApi',
+        'tableRouterApi',
         'isLoading'
       ]),
     },
     methods: {
-      ...mapActions(['setRouter', 'setLoading']),
+      ...mapActions(['setTableRouter', 'setLoading']),
       toggleState: function (item) {
         this.activeItem = item;
 
       },
       linkTo: function (obj) {
-        if (this.$store.state.routerApi !== obj.type) {
-          this.setRouter(obj.type);
+        if (this.$store.state.tableRouterApi !== obj.type) {
+          this.setTableRouter(obj.type);
           this.setLoading(true);
           this.$router.push({
             path: obj.link,

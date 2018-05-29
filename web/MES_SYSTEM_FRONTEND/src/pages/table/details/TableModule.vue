@@ -6,8 +6,8 @@
 </template>
 
 <script>
-  import Options from './Comp/Options'
-  import TableDetails from './Comp/TableDetails'
+  import Options from './comp/Options'
+  import TableDetails from './comp/TableDetails'
   export default {
     name: "Details",
     components: {

@@ -11,7 +11,7 @@
           <option value="100">100</option>
           <option value="400">400</option>
           <option value="2000" selected>2000</option>
-          <option value="2147483647">2147483647</option>
+          <option value="2147483647">不限</option>
         </select>
       </div>
       <div v-for="item in queryOptions" class="row no-gutters pl-3 pr-3">
@@ -19,7 +19,7 @@
       </div>
 
       <div class="form-group col row align-items-end">
-        <a href="#" class="btn btn-primary ml-3" @click="thisFetch">查询</a>
+        <a href="#" class="btn btn-primary ml-3" @click="thisFetch" @keyup.enter="thisFetch">查询</a>
       </div>
     </div>
   </div>
@@ -64,23 +64,23 @@
       return {
         pageSize: 2000,
         queryOptions: [],
+        copyQueryOptions: [],
         queryString: "",
         test: '123'
       }
     },
     mounted: function () {
-      if (this.$store.state.routerApi !== 'default') {
-        this.initForm(this.$store.state.routerApi)
+      if (this.$store.state.tableRouterApi !== 'default') {
+        this.initForm(this.$store.state.tableRouterApi)
       }
     },
     computed: {
       ...mapGetters([
-        'routerApi'
+        'tableRouterApi'
       ]),
     },
     watch: {
-      routerApi: function (val) {
-        console.log(111)
+      tableRouterApi: function (val) {
         this.initForm(val);
       }
     },
@@ -92,7 +92,13 @@
       },
       createQueryString: function () {
         this.queryString = "";
-        this.queryOptions.map((item, index) => {
+        this.copyQueryOptions = JSON.parse(JSON.stringify(this.queryOptions));
+        this.copyQueryOptions.map((item, index) => {
+          if (item.model === "" || item.modelFrom === "" || item.modelTo === "") {
+            this.copyQueryOptions.splice(index, 1)
+          }
+        });
+        this.copyQueryOptions.map((item, index) => {
           if (item.type === 'text') {
             if (item.model !== "") {
               if (index === 0) {
@@ -127,19 +133,19 @@
         let options = {
           url: routerUrl,
           data: {
-            table: this.$store.state.routerApi,
+            table: this.$store.state.tableRouterApi,
             pageNo: 1,
             pageSize: this.pageSize,
             filter: this.queryString
           }
         };
-        //this.setRouter(obj.type);
-        this.setLoading(true);
+        //this.setTableRouter(obj.type);
+
         this.$router.push({
-          path: '/main/details',
+          path: '/table/details',
           query: options
         }, () => {
-
+          this.setLoading(true);
         })
 
       },

@@ -1,5 +1,5 @@
 //export const routerUrl = "/api";//"http://10.10.11.109:8888/mes_server/report/select";
-export const routerUrl = "http://10.10.11.109:8888/mes_server/report/select";
+export const routerUrl = "http://10.10.11.110:8080/mes_server/report/select";
 export const setRouterConfig = (name) => {
   if (name === 'GpsTcData' || name === 'GpsSMT_TcData') {
     return {
@@ -47,7 +47,7 @@ const ROUTER_CONFIG = {
       }
     ],
     dataColumns: [
-      {field: 'showId', title: '序号', colStyle: {'width': '50px'}},
+      {field: 'showId', title: '序号', colStyle: {'width': '70px'}},
       {field: 'SN', title: 'SN号', colStyle: {'width': '260px'}},
       {field: 'FixMode', title: '定位方式', colStyle: {'width': '60px'}},
       {field: 'GpsDb_0', title: 'GpsDb信息_1', colStyle: {'width': '60px'}},
@@ -75,6 +75,12 @@ const ROUTER_CONFIG = {
         type: 'text'
       },
       {
+        id: 'IMEI',
+        name: 'IMEI',
+        model: '',
+        type: 'text'
+      },
+      {
         id: 'TestTime',
         name: '测试时间',
         modelFrom: '',
@@ -83,7 +89,7 @@ const ROUTER_CONFIG = {
       }
     ],
     dataColumns: [
-      {field: 'showId', title: '序号', colStyle: {'width': '50px'},},
+      {field: 'showId', title: '序号', colStyle: {'width': '70px'},},
       {field: 'SN', title: 'SN号', colStyle: {'width': '260px'}},
       {field: 'IMEI', title: 'IMEI号', colStyle: {'width': '135px'}},
       {field: 'ZhiDan', title: '制单号',  colStyle: {'width': '60px'}},
@@ -114,7 +120,7 @@ const ROUTER_CONFIG = {
       }
     ],
     dataColumns: [
-      {field: 'showId', title: '序号', colStyle: {'width': '50px'},},
+      {field: 'showId', title: '序号', colStyle: {'width': '70px'},},
       {field: 'SN', title: 'SN号', colStyle: {'width': '260px'}},
       {field: 'IMEI', title: 'IMEI号', colStyle: {'width': '135px'}},
       {field: 'SoftModel', title: '机型',  colStyle: {'width': '120px'}},
@@ -145,7 +151,7 @@ const ROUTER_CONFIG = {
       }
     ],
     dataColumns: [
-      {field: 'showId', title:'序号', colStyle: {'width': '60px'}},
+      {field: 'showId', title:'序号', colStyle: {'width': '70px'}},
       {field: 'BoxNo', title:'箱号', colStyle: {'width': '60px'}},
       {field: 'IMEI', title:'IMEI号', colStyle: {'width': '60px'}},
       {field: 'ZhiDan', title:'制单号', colStyle: {'width': '60px'}},
@@ -172,7 +178,7 @@ const ROUTER_CONFIG = {
   Gps_OperRecord: {
     queryOptions: [],
     dataColumns: [
-      {field: 'showId', title: '序号', colStyle: {'width': '50px'}},
+      {field: 'showId', title: '序号', colStyle: {'width': '70px'}},
       {field: 'OperName', title: '操作用户', colStyle: {'width': '100px'}},
       {field: 'OperContent', title: '操作事项', colStyle: {'width': '100px'}},
       {field: 'OperTime', title: '操作时间', colStyle: {'width': '100px'}},
@@ -197,7 +203,7 @@ const ROUTER_CONFIG = {
       }
     ],
     dataColumns: [
-      {field: 'showId', title:'序号', colStyle: {'width': '60px'}},
+      {field: 'showId', title:'序号', colStyle: {'width': '70px'}},
       {field: 'IMEI', title:'IMEI号', colStyle: {'width': '120px'}},
       {field: 'BAT', title:'BAT号', colStyle: {'width': '120px'}},
       {field: 'ZhiDan', title:'制单号', colStyle: {'width': '60px'}},
@@ -222,7 +228,7 @@ const ROUTER_CONFIG = {
       }
     ],
     dataColumns: [
-      {field: 'showId', title:'序号', colStyle: {'width': '60px'}},
+      {field: 'showId', title:'序号', colStyle: {'width': '70px'}},
       {field: 'IMEI', title:'IMEI号', colStyle: {'width': '120px'}},
       {field: 'VIP', title:'VIP号', colStyle: {'width': '120px'}},
       {field: 'ZhiDan', title:'制单号', colStyle: {'width': '60px'}},
@@ -241,7 +247,7 @@ const ROUTER_CONFIG = {
       }
     ],
     dataColumns: [
-      {field: 'showId', title:'序号', colStyle: {'width': '60px'}},
+      {field: 'showId', title:'序号', colStyle: {'width': '70px'}},
       {field: 'IMEI1', title:'IMEI/SIM卡号', colStyle: {'width': '120px'}},
       {field: 'IMEI2', title:'SN号', colStyle: {'width': '120px'}},
       {field: 'IMEI3', title:'SIM卡号', colStyle: {'width': '120px'}},

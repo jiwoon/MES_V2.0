@@ -29,7 +29,8 @@
         srcData: [],
         columns: [],
         total: 0,
-        query: {"limit": 20, "offset": 0}
+        query: {"limit": 20, "offset": 0},
+        isPending: false
       }
     },
     created() {
@@ -37,7 +38,7 @@
     },
     computed: {
       ...mapGetters([
-        'routerApi'
+        'tableRouterApi'
       ]),
 
     },
@@ -69,7 +70,7 @@
     mounted: function () {
     },
     methods: {
-      ...mapActions(['setRouter', 'setLoading']),
+      ...mapActions(['setTableRouter', 'setLoading']),
       thisFetch: function (opt) {
         let options = {
           url: routerUrl,
@@ -84,20 +85,29 @@
       fetchData: function (options) {
         let routerConfig = setRouterConfig(options.data.table);
         this.columns = routerConfig.data.dataColumns;
-        axiosFetch(options).then(response => {
-          if (response.data.result === "succeed") {
+        if (!this.isPending) {
+          this.isPending = true;
+          axiosFetch(options).then(response => {
             this.setLoading(false);
-            this.srcData = response.data.data.list;
-            this.data = response.data.data.list.slice(this.query.offset, this.query.offset + this.query.limit);
-            this.data.map((item, index) => {
-              item.showId = index + 1 + this.query.offset;
-            });
-            this.total = response.data.data.list.length
-          } else {
-            alert("请重试");
-            this.setLoading(false)
-          }
-        })
+            this.isPending = false;
+            if (response.data.result === "succeed") {
+              this.srcData = response.data.data.list;
+              this.data = response.data.data.list.slice(this.query.offset, this.query.offset + this.query.limit);
+              this.data.map((item, index) => {
+                item.showId = index + 1 + this.query.offset;
+              });
+              this.total = response.data.data.list.length
+            } else {
+              alert("请重试");
+            }
+          })
+            .catch(err => {
+              this.isPending = false;
+              alert('请求超时，清刷新重试')
+            })
+        } else {
+          this.setLoading(false)
+        }
       },
       dataFilter: function () {
         this.data = this.srcData.slice(this.query.offset, this.query.offset + this.query.limit);
@@ -117,4 +127,5 @@
     padding: 10px;
     min-height: 500px;
   }
+
 </style>
