@@ -1,10 +1,5 @@
 package com.jimi.mes_server.config;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.apache.log4j.PropertyConfigurator;
-
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
@@ -16,11 +11,11 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.dialect.SqlServerDialect;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
+import com.jimi.mes_server.controller.OrderController;
 import com.jimi.mes_server.controller.ReportController;
-import com.jimi.mes_server.interceptor.CorsInterceptor;
+import com.jimi.mes_server.interceptor.CORSInterceptor;
+import com.jimi.mes_server.interceptor.ErrorLogInterceptor;
 import com.jimi.mes_server.model.MappingKit;
-
-import cc.darhao.dautils.api.ResourcesUtil;
 
 /**
  * 全局配置
@@ -49,7 +44,8 @@ public class MesConfig extends JFinalConfig {
 	
 	@Override
 	public void configInterceptor(Interceptors me) {
-		me.addGlobalActionInterceptor(new CorsInterceptor());
+		me.addGlobalActionInterceptor(new ErrorLogInterceptor());
+		me.addGlobalActionInterceptor(new CORSInterceptor());
 	}
 
 	@Override
@@ -61,6 +57,7 @@ public class MesConfig extends JFinalConfig {
 		//配置ORM
 	    ActiveRecordPlugin arp = new ActiveRecordPlugin(dp);
 	    arp.setDialect(new SqlServerDialect());
+	    arp.setShowSql(true);
 	    MappingKit.mapping(arp);
 	    me.add(arp);
 	}
@@ -78,18 +75,12 @@ public class MesConfig extends JFinalConfig {
 //			me.add("/" + name, controllerClass);
 //		}
 		me.add("/report", ReportController.class);
+		me.add("/order", OrderController.class);
 	}
 	
 	
 	@Override
 	public void afterJFinalStart() {
-		InputStream inputStream;
-		try {
-			inputStream = ResourcesUtil.getResourceAsStream("log4j.properties");
-			PropertyConfigurator.configure(inputStream);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		System.out.println("Mes Server is Running now...");
 	}
 	

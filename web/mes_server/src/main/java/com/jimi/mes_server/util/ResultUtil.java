@@ -32,6 +32,16 @@ public class ResultUtil {
 		this.data = data;
 	}
 
+	
+	public static ResultUtil succeed() {
+		return succeed("operation succeed");
+	}
+	
+	
+	public static ResultUtil failed() {
+		return failed("operation failed");
+	}
+	
 
 	public static ResultUtil succeed(Object data) {
 		ResultUtil resultUtil = new ResultUtil();

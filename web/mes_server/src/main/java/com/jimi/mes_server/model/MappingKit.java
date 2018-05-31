@@ -16,7 +16,7 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 public class MappingKit {
 	
 	public static void mapping(ActiveRecordPlugin arp) {
-		arp.addMapping("GpsTcData", "Id", GpsTcData.class);
+		arp.addMapping("Gps_ManuOrderParam", "Id", GpsManuorderparam.class);
 	}
 }
 
