@@ -2,7 +2,7 @@ package com.jimi.mes_server.controller;
 
 import com.jfinal.aop.Enhancer;
 import com.jfinal.core.Controller;
-import com.jimi.mes_server.service.DAOService;
+import com.jimi.mes_server.service.base.SelectService;
 import com.jimi.mes_server.util.ResultUtil;
 
 /**
@@ -13,7 +13,7 @@ import com.jimi.mes_server.util.ResultUtil;
  */
 public class ReportController extends Controller {
 	
-	private static DAOService daoService = Enhancer.enhance(DAOService.class);
+	private static SelectService daoService = Enhancer.enhance(SelectService.class);
 	
 	
 	public void select(String table, Integer pageNo, Integer pageSize, String ascBy, String descBy, String filter){

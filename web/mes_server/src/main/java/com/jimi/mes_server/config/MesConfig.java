@@ -9,10 +9,13 @@ import com.jfinal.config.Routes;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.dialect.SqlServerDialect;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
 import com.jimi.mes_server.controller.OrderController;
 import com.jimi.mes_server.controller.ReportController;
+import com.jimi.mes_server.controller.UserController;
+import com.jimi.mes_server.interceptor.AccessInterceptor;
 import com.jimi.mes_server.interceptor.CORSInterceptor;
 import com.jimi.mes_server.interceptor.ErrorLogInterceptor;
 import com.jimi.mes_server.model.MappingKit;
@@ -46,6 +49,8 @@ public class MesConfig extends JFinalConfig {
 	public void configInterceptor(Interceptors me) {
 		me.addGlobalActionInterceptor(new ErrorLogInterceptor());
 		me.addGlobalActionInterceptor(new CORSInterceptor());
+		me.addGlobalActionInterceptor(new AccessInterceptor());
+		me.addGlobalServiceInterceptor(new Tx());
 	}
 
 	@Override
@@ -65,17 +70,9 @@ public class MesConfig extends JFinalConfig {
 	
 	@Override
 	public void configRoute(Routes me) {
-//		//自动把Controller包下的所有控制器类名字的前缀的首字母小写化后作为Key
-//		PropKit.use("properties.ini");
-//		List<Class> controllerClasses = ClassScanner.searchClass(PropKit.get("controllerPackage"));
-//		for (Class controllerClass : controllerClasses) {
-//			String name = controllerClass.getSimpleName();
-//			name = name.replaceAll("Controller", "");
-//			name = name.substring(0, 1).toLowerCase() + name.substring(1, name.length());
-//			me.add("/" + name, controllerClass);
-//		}
 		me.add("/report", ReportController.class);
 		me.add("/order", OrderController.class);
+		me.add("/user", UserController.class);
 	}
 	
 	
@@ -89,9 +86,4 @@ public class MesConfig extends JFinalConfig {
 	public void beforeJFinalStop() {
 	}
 	
-
-//	public static void main(String[] args){
-//	    JFinal.start("src/main/webapp", 80, "/", 5);
-//	}
-
 }

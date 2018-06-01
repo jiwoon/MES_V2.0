@@ -17,6 +17,9 @@ public class MappingKit {
 	
 	public static void mapping(ActiveRecordPlugin arp) {
 		arp.addMapping("Gps_ManuOrderParam", "Id", GpsManuorderparam.class);
+		arp.addMapping("Gps_TestPlan", "TestPlanId", GpsTestplan.class);
+		arp.addMapping("Gps_User", "UserId", GpsUser.class);
+		arp.addMapping("Gps_UserType", "TypeId", GpsUsertype.class);
 	}
 }
 
