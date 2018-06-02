@@ -1,3 +1,4 @@
+<!--加载动画-->
 <template>
   <div class="loading-wrap">
     <div class="loading">

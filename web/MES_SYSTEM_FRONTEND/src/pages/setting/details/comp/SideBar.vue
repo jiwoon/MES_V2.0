@@ -1,3 +1,4 @@
+<!--配置功能统一导航-->
 <template>
   <div class="mt-3 mb-3">
     <nav>
@@ -9,7 +10,7 @@
         </div>
         <div class="collapse show" id="collapsePenetrate">
           <div @click="toggleState('orderManage')">
-            <a class="sidebar-link" href="#" @click="linkTo({link: '/setting/order_manage'})" :class="activeItem === 'orderManage' ? 'active' : ''">订单管理</a>
+            <a class="sidebar-link" href="#" @click="linkTo({link: '/setting/order_manage', type: 'order_manage'})" :class="activeItem === 'orderManage' ? 'active' : ''">订单管理</a>
           </div>
         </div>
         <!--&lt;!&ndash;各工位测试结果&ndash;&gt;
@@ -64,7 +65,6 @@
 
 <script>
   import {mapGetters, mapActions} from 'vuex'
-
   export default {
     data() {
       return {
@@ -174,7 +174,7 @@
 
       },
       linkTo: function (obj) {
-        //if (this.$store.state.tableRouterApi !== obj.type) {
+        if (this.$route.fullPath !== (obj.link + '?type=' + obj.type)) {
           //this.setTableRouter(obj.type);
           this.setLoading(true);
           this.$router.push({
@@ -185,7 +185,7 @@
           }, () => {
 
           })
-        //}
+        }
       }
     }
 

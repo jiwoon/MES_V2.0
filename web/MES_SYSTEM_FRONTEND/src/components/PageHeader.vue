@@ -1,3 +1,5 @@
+<!--顶栏组件-->
+
 <template>
   <nav class="navbar navbar-light shadow-sm">
     <div class="container">

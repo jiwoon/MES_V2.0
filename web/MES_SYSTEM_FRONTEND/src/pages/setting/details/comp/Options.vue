@@ -1,4 +1,4 @@
-<!--表单查看页面的条件过滤栏-->
+<!--订单配置页面顶部条件过滤栏-->
 
 <template>
   <div class="options-area">
@@ -20,8 +20,11 @@
         <component :opt="item" :is="item.type + '-comp'" :callback="thisFetch"></component>
       </div>
 
-      <div class="form-group col row align-items-end">
-        <a href="#" class="btn btn-primary ml-3" @click="thisFetch">查询</a>
+      <div class="form-group row align-items-end">
+        <a href="#" class="btn btn-primary ml-3 mr-4" @click="thisFetch">查询</a>
+      </div>
+      <div class="form-group row align-items-end">
+        <a href="#" class="btn btn-primary ml-3 mr-4" @click="addOrder">新增</a>
       </div>
     </div>
   </div>
@@ -29,7 +32,7 @@
 
 <script>
   import {mapGetters, mapActions} from 'vuex';
-  import {setRouterConfig, routerUrl} from "../../../../config/tableApiConfig";
+  import {setRouterConfig, routerUrl} from "../../../../config/orderApiConfig";
   import {axiosFetch} from "../../../../utils/fetchData";
   import {Datetime} from 'vue-datetime'
   import 'vue-datetime/dist/vue-datetime.css'
@@ -38,7 +41,7 @@
     name: "Options",
     components: {
       'text-comp': {
-        props: ['opt','callback'],
+        props: ['opt', 'callback'],
         template: '<div class="form-group col pr-3"">\n' +
         '           <label :for="opt.id">{{opt.name}}</label>\n' +
         '           <input type="text" class="form-control" :id="opt.id" v-model="opt.model" @keyup.enter="callback">\n' +
@@ -72,9 +75,8 @@
       }
     },
     mounted: function () {
-      if (this.$store.state.tableRouterApi !== 'default') {
-        this.initForm(this.$store.state.tableRouterApi)
-      }
+        this.initForm('order_manage')
+
     },
     computed: {
       ...mapGetters([
@@ -82,12 +84,12 @@
       ]),
     },
     watch: {
-      tableRouterApi: function (val) {
-        this.initForm(val);
-      }
+      // tableRouterApi: function (val) {
+      //   this.initForm(val);
+      // }
     },
     methods: {
-      ...mapActions(['setLoading']),
+      ...mapActions(['setLoading','setEditing', 'setEditData']),
       initForm: function (opt) {
         let routerConfig = setRouterConfig(opt);
         this.queryOptions = routerConfig.data.queryOptions;
@@ -135,16 +137,16 @@
         let options = {
           url: routerUrl,
           data: {
-            table: this.$store.state.tableRouterApi,
             pageNo: 1,
             pageSize: this.pageSize,
+            descBy: 'ProductDate',
             filter: this.queryString
           }
         };
         //this.setTableRouter(obj.type);
-        this.$router.replace('_empty');
+        this.$router.replace('/_empty');
         this.$router.push({
-          path: '/table/details',
+          path: '/setting/order_manage',
           query: options
         }, () => {
           this.setLoading(true);
@@ -159,6 +161,10 @@
         let compFrom = new Date(dateFrom);
         let compTo = new Date(dateTo);
         return (compTo - compFrom);
+      },
+      addOrder: function () {
+        this.setEditData([]);
+        this.setEditing(true)
       }
     }
   }
