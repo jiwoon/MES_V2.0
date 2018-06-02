@@ -1,5 +1,8 @@
-//export const routerUrl = "/api";//"http://10.10.11.109:8888/mes_server/report/select";
-export const routerUrl = "http://10.10.11.110:8080/mes_server/report/select";
+/*报表统一配置页面*/
+
+export const routerUrl = "http://10.10.11.109:8888/mes_server/report/select";
+
+//export const routerUrl = "http://10.10.11.109:8080/mes_server/report/select";
 export const setRouterConfig = (name) => {
   if (name === 'GpsTcData' || name === 'GpsSMT_TcData') {
     return {

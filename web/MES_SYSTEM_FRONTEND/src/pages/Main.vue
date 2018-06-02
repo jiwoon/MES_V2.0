@@ -1,3 +1,4 @@
+<!--系统主要功能页面根组件-->
 <template>
   <div class="main-body">
     <side-setting/>

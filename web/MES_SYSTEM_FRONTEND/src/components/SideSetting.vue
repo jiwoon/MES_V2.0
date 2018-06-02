@@ -1,3 +1,4 @@
+<!--侧边功能导航-->
 <template>
   <div class="side-setting">
     <div class="setting-container">
@@ -26,7 +27,7 @@
     name: "SideSetting",
     data() {
       return {
-        activeItem: 'table'
+        activeItem: 'table' //活动项目
       }
     },
     computed: {
@@ -34,13 +35,16 @@
     },
     methods: {
       ...mapActions(['setTableRouter', 'setLoading']),
+      /*点击切换项目、路由导航*/
       initData: function (item) {
         this.toggleState(item);
         this.linkTo(item);
       },
+      /*切换当前活动项目*/
       toggleState: function (val) {
         this.activeItem = val;
       },
+      /*路由导航*/
       linkTo: function (val) {
         this.setTableRouter('default');
         this.$router.replace({

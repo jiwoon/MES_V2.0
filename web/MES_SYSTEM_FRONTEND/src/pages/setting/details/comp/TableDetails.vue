@@ -1,4 +1,4 @@
-<!--表单查看页面的表单详情 统一配置-->
+<!--订单配置页面表单-->
 <template>
   <div class="main-details mt-1 mb-3">
     <datatable
@@ -11,11 +11,17 @@
   import Qs from 'qs'
   import {axiosFetch} from "../../../../utils/fetchData";
   import {mapGetters, mapActions} from 'vuex'
-  import {setRouterConfig, routerUrl} from "../../../../config/tableApiConfig";
+  import {setRouterConfig, routerUrl} from "../../../../config/orderApiConfig";
+  import EditOptions from './EditOptions';
+  import EditPanel from './EditPanel';
 
   export default {
     name: "Details",
-    components: {},
+    props: ['row'],
+    components: {
+      EditOptions,
+      EditPanel
+    },
     data() {
       return {
         fixHeaderAndSetBodyMaxHeight: 650,
@@ -45,13 +51,13 @@
     },
     watch: {
       $route: function (route) {
-        if (route.query.type){
+        if (route.query.type) {
           let options = {
             url: routerUrl,
             data: {
-              table: route.query.type,
               pageNo: 1,
-              pageSize: 2000
+              pageSize: 2000,
+              descBy: 'ProductDate'
             }
           };
           this.fetchData(options)
@@ -76,15 +82,15 @@
         let options = {
           url: routerUrl,
           data: {
-            table: opt.type,
             pageNo: 1,
-            pageSize: 2000
+            pageSize: 2000,
+            descBy: 'ProductDate'
           }
         };
         this.fetchData(options)
       },
       fetchData: function (options) {
-        let routerConfig = setRouterConfig(options.data.table);
+        let routerConfig = setRouterConfig('order_manage');
         this.columns = routerConfig.data.dataColumns;
         if (!this.isPending) {
           this.isPending = true;
@@ -96,6 +102,20 @@
               this.data = response.data.data.list.slice(this.query.offset, this.query.offset + this.query.limit);
               this.data.map((item, index) => {
                 item.showId = index + 1 + this.query.offset;
+                switch (item.Status) {
+                  case 0:
+                    item.ShowStatus = '未开始';
+                    break;
+                  case 1:
+                    item.ShowStatus = '进行中';
+                    break;
+                  case 2:
+                    item.ShowStatus = '已完成';
+                    break;
+                  case 3:
+                    item.ShowStatus = '已作废';
+                    break;
+                }
               });
               this.total = response.data.data.list.length
             } else {
@@ -104,7 +124,7 @@
           })
             .catch(err => {
               this.isPending = false;
-              alert('请求超时，请刷新重试')
+              alert('请求超时，清刷新重试')
             })
         } else {
           this.setLoading(false)
@@ -114,6 +134,20 @@
         this.data = this.srcData.slice(this.query.offset, this.query.offset + this.query.limit);
         this.data.map((item, index) => {
           item.showId = index + 1 + this.query.offset;
+          switch (item.Status) {
+            case 0:
+              item.ShowStatus = '未开始';
+              break;
+            case 1:
+              item.ShowStatus = '进行中';
+              break;
+            case 2:
+              item.ShowStatus = '已完成';
+              break;
+            case 3:
+              item.ShowStatus = '已作废';
+              break;
+          }
         })
       }
     }

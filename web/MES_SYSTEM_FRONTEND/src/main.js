@@ -4,11 +4,11 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import App from './App'
 import router from './router'
-import axios from 'axios'
+import axios from './config/http'
 import store from './store'
 import  Icon from 'vue-svg-icon/Icon'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap/dist/js/bootstrap.min'
+import 'bootstrap/dist/js/bootstrap.bundle.min'
 import Datatable from '../static/js/datatable.min.js'
 
 Vue.component('icon', Icon)
