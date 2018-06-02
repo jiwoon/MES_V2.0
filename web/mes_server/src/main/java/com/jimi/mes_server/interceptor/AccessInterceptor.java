@@ -4,7 +4,9 @@ import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jimi.mes_server.annotation.Access;
 import com.jimi.mes_server.controller.UserController;
+import com.jimi.mes_server.exception.AccessException;
 import com.jimi.mes_server.model.GpsUser;
+import com.jimi.mes_server.util.TokenBox;
 
 
 /**
@@ -22,12 +24,13 @@ public class AccessInterceptor implements Interceptor {
 			 invocation.invoke();
 			 return;
 		 }
-		 GpsUser user = invocation.getController().getSessionAttr(UserController.SESSION_KEY_LOGIN_USER);
+		 String token = invocation.getController().getPara(TokenBox.TOKEN_ID_KEY_NAME);
+		 GpsUser user = TokenBox.get(token, UserController.SESSION_KEY_LOGIN_USER);
 		 if(user == null) {
-			 throw new RuntimeException("not logined");
+			 throw new AccessException("not logined");
 		 }
 		 if(!user.getInService()) {
-			 throw new RuntimeException("the user is disabled");
+			 throw new AccessException("the user is disabled");
 		 }
 		 String[] accessUserTypes = access.value();
 		 for (String userType : accessUserTypes) {
@@ -36,7 +39,7 @@ public class AccessInterceptor implements Interceptor {
 				return;
 			}
 		}
-		throw new RuntimeException("access denied");
+		throw new AccessException("access denied");
 	}
 
 }

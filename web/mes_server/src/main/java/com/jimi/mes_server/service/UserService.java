@@ -2,6 +2,8 @@ package com.jimi.mes_server.service;
 
 import java.util.Date;
 
+import com.jimi.mes_server.exception.OperationException;
+import com.jimi.mes_server.exception.ParameterException;
 import com.jimi.mes_server.model.GpsTestplan;
 import com.jimi.mes_server.model.GpsUser;
 import com.jimi.mes_server.model.GpsUsertype;
@@ -24,10 +26,10 @@ public class UserService extends SelectService{
 	public GpsUser login(String userName, String password) {
 		GpsUser user = GpsUser.dao.findFirst(loginSql, userName, MD5Util.MD5(password));
 		if(user == null) {
-			throw new RuntimeException("userName or password is not correct");
+			throw new OperationException("userName or password is not correct");
 		}
 		if(!user.getInService()) {
-			throw new RuntimeException("this user is disabled");
+			throw new OperationException("this user is disabled");
 		}
 		user.setLoginTime(new Date());
 		user.update();
@@ -38,7 +40,7 @@ public class UserService extends SelectService{
 	public boolean add(GpsUser user) {
 		checkUserTypeAndTestPlan(user);
 		if(GpsUser.dao.find(uniqueCheckSql, user.getUserName()).size() != 0) {
-			throw new RuntimeException("user is already exist");
+			throw new OperationException("user is already exist");
 		}
 		user.keep("UserName","UserDes","UserPwd","UserType","UserTestPlan");
 		user.setUserPwd(MD5Util.MD5(user.getUserPwd()));
@@ -56,11 +58,11 @@ public class UserService extends SelectService{
 	private void checkUserTypeAndTestPlan(GpsUser user) {
 		String userType =  user.getUserType();
 		if(GpsUsertype.dao.find(userTypeSql, userType).size() == 0) {
-			throw new RuntimeException("user type not found");
+			throw new ParameterException("user type not found");
 		}
 		String userTestPlan = user.getUserTestPlan();
 		if(GpsTestplan.dao.findById(userTestPlan) == null) {
-			throw new RuntimeException("user test plan not found");
+			throw new ParameterException("user test plan not found");
 		}
 	}
 }

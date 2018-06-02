@@ -19,6 +19,7 @@ import com.jimi.mes_server.interceptor.AccessInterceptor;
 import com.jimi.mes_server.interceptor.CORSInterceptor;
 import com.jimi.mes_server.interceptor.ErrorLogInterceptor;
 import com.jimi.mes_server.model.MappingKit;
+import com.jimi.mes_server.util.TokenBox;
 
 /**
  * 全局配置
@@ -78,12 +79,14 @@ public class MesConfig extends JFinalConfig {
 	
 	@Override
 	public void afterJFinalStart() {
+		TokenBox.start(PropKit.use("properties.ini").getInt("sessionTimeout"));
 		System.out.println("Mes Server is Running now...");
 	}
 	
 	
 	@Override
 	public void beforeJFinalStop() {
+		TokenBox.stop();
 	}
 	
 }

@@ -8,17 +8,17 @@ package com.jimi.mes_server.util;
  */
 public class ResultUtil {
 
-	private String result;
+	private int result;
 	
 	private Object data;
 
 	
-	public String getResult() {
+	public int getResult() {
 		return result;
 	}
 
 
-	public void setResult(String result) {
+	public void setResult(int result) {
 		this.result = result;
 	}
 
@@ -38,22 +38,32 @@ public class ResultUtil {
 	}
 	
 	
-	public static ResultUtil failed() {
-		return failed("operation failed");
-	}
-	
-
 	public static ResultUtil succeed(Object data) {
 		ResultUtil resultUtil = new ResultUtil();
-		resultUtil.result = "succeed";
+		resultUtil.result = 200;
 		resultUtil.data = data;
 		return resultUtil;
 	}
 	
 	
+	public static ResultUtil failed() {
+		return failed("operation failed");
+	}
+	
+	
+	public static ResultUtil failed(int result) {
+		return failed(result, "operation failed");
+	}
+	
+	
 	public static ResultUtil failed(Object errorMsg) {
+		return failed(501, errorMsg);
+	}
+	
+	
+	public static ResultUtil failed(int result, Object errorMsg) {
 		ResultUtil resultUtil = new ResultUtil();
-		resultUtil.result = "failed";
+		resultUtil.result = result;
 		resultUtil.data = errorMsg;
 		return resultUtil;
 	}

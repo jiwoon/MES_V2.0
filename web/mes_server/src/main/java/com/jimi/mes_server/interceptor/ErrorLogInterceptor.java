@@ -38,9 +38,24 @@ public class ErrorLogInterceptor implements Interceptor {
 		try {
 			invocation.invoke();
 		}catch (Exception e) {
+			int result;
+			switch (e.getClass().getSimpleName()) {
+			case "AccessException":
+				result = 401;
+				break;
+			case "ParameterException":
+				result = 400;			
+				break;
+			case "OperationException":
+				result = 412;
+				break;
+			default:
+				result = 500;
+				break;
+			}
 			e.printStackTrace();
 			logger.error(e.getMessage());
-			invocation.getController().renderJson(ResultUtil.failed(e.getMessage()));
+			invocation.getController().renderJson(ResultUtil.failed(result, e.getMessage()));
 		}
 	}
 

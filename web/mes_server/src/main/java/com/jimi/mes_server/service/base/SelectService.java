@@ -7,6 +7,7 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.jimi.mes_server.exception.ParameterException;
 
 /**
  * 通用查询业务层
@@ -39,7 +40,7 @@ public class SelectService {
 	private void createFrom(String table, StringBuffer sql) {
 		//表名非空判断
 		if(table == null) {
-			throw new RuntimeException("table name must be provided");
+			throw new ParameterException("table name must be provided");
 		}
 		//表是否在可读范围内
 		String[] reportTables = PropKit.use("properties.ini").get("readableTables").split(",");
@@ -50,7 +51,7 @@ public class SelectService {
 				return;
 			}
 		}
-		throw new RuntimeException("not a readable table");
+		throw new ParameterException("not a readable table");
 	}
 
 	
@@ -88,7 +89,7 @@ public class SelectService {
 
 	private void createOrderBy(String ascBy, String descBy, StringBuffer sql) {
 		if(ascBy != null && descBy != null) {
-			throw new RuntimeException("ascBy and descBy can not be provided at the same time");
+			throw new ParameterException("ascBy and descBy can not be provided at the same time");
 		}else if(ascBy != null) {
 			sql.append(" ORDER BY " + ascBy + " ASC ");
 		}else if(descBy != null){
@@ -99,7 +100,7 @@ public class SelectService {
 
 	private Page<Record> paginateAndFillWhereValues(Integer pageNo, Integer pageSize, StringBuffer sql, List<String> questionValues) {
 		if((pageNo != null && pageSize == null) || (pageNo == null && pageSize != null)) {
-			throw new RuntimeException("ascBy and descBy must be provided at the same time");
+			throw new ParameterException("ascBy and descBy must be provided at the same time");
 		}
 		if(pageNo == null && pageSize == null) {
 			return Db.paginate(1, PropKit.use("properties.ini").getInt("defaultPageSize"), "SELECT *", sql.toString(), questionValues.toArray());

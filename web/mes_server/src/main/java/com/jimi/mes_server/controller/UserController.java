@@ -4,9 +4,11 @@ import com.jfinal.aop.Enhancer;
 import com.jfinal.core.Controller;
 import com.jfinal.core.paragetter.Para;
 import com.jimi.mes_server.annotation.Access;
+import com.jimi.mes_server.exception.ParameterException;
 import com.jimi.mes_server.model.GpsUser;
 import com.jimi.mes_server.service.UserService;
 import com.jimi.mes_server.util.ResultUtil;
+import com.jimi.mes_server.util.TokenBox;
 
 /**
  * 用户控制器
@@ -30,19 +32,34 @@ public class UserController extends Controller  {
 	
 	public void login(String userName, String password) {
 		GpsUser user = userService.login(userName, password);
-		setSessionAttr(SESSION_KEY_LOGIN_USER, user);
+		//判断重复登录
+		String tokenId = getPara(TokenBox.TOKEN_ID_KEY_NAME);
+		if(tokenId != null) {
+			GpsUser user2 = TokenBox.get(tokenId, SESSION_KEY_LOGIN_USER);
+			if(user2 != null && user.getUserId() == user2.getUserId()) {
+				throw new ParameterException("do not login again");
+			}
+		}
+		user.put(TokenBox.TOKEN_ID_KEY_NAME, TokenBox.createTokenId());
+		TokenBox.put(TokenBox.createTokenId(), SESSION_KEY_LOGIN_USER, user);
 		renderJson(ResultUtil.succeed(user));
 	}
 	
 	
 	public void logout() {
-		setSessionAttr(SESSION_KEY_LOGIN_USER, null);
+		//判断是否未登录
+		String tokenId = getPara(TokenBox.TOKEN_ID_KEY_NAME);
+		GpsUser user = TokenBox.get(tokenId, SESSION_KEY_LOGIN_USER);
+		if(user == null) {
+			throw new ParameterException("do not need to logout when not login");
+		}
+		TokenBox.remove(tokenId);
 		renderJson(ResultUtil.succeed());
 	}
 	
 	
 	public void checkLogined() {
-		GpsUser user = getSessionAttr(SESSION_KEY_LOGIN_USER);
+		GpsUser user = TokenBox.get(getPara(TokenBox.TOKEN_ID_KEY_NAME), SESSION_KEY_LOGIN_USER);
 		if(user != null) {
 			renderJson(ResultUtil.succeed(user));
 		}else {

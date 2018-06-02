@@ -1,5 +1,6 @@
 package com.jimi.mes_server.service;
 
+import com.jimi.mes_server.exception.ParameterException;
 import com.jimi.mes_server.model.GpsManuorderparam;
 import com.jimi.mes_server.service.base.SelectService;
 
@@ -15,7 +16,7 @@ public class OrderService extends SelectService{
 	public boolean update(GpsManuorderparam order) {
 		GpsManuorderparam orderInDb = GpsManuorderparam.dao.findById(order.getId());
 		if(orderInDb.getStatus() != 0) {
-			throw new RuntimeException("only update the order in the non start state");
+			throw new ParameterException("only update the order in the non start state");
 		}
 		order.remove("Status");
 		return order.update();
@@ -45,7 +46,7 @@ public class OrderService extends SelectService{
 			order.setStatus(1);
 			return order.update();
 		}else {
-			throw new RuntimeException("only start the order in non start state");
+			throw new ParameterException("only start the order in non start state");
 		}
 	}
 	
@@ -56,7 +57,7 @@ public class OrderService extends SelectService{
 			order.setStatus(2);
 			return order.update();
 		}else {
-			throw new RuntimeException("only finish the order in non-start or start state");
+			throw new ParameterException("only finish the order in non-start or start state");
 		}
 	}
 	
@@ -67,7 +68,7 @@ public class OrderService extends SelectService{
 			order.setStatus(3);
 			return order.update();
 		}else {
-			throw new RuntimeException("only cancel the order in non-start or start state");
+			throw new ParameterException("only cancel the order in non-start or start state");
 		}
 	}
 }
