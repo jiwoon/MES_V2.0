@@ -34,15 +34,6 @@
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
-				<configuration>
-					<!-- 部署用参数 -->
-					<url>http://localhost:8888/manager/text</url>
-					<username>darhao</username>
-					<password>darhao776323</password>
-					<update>true</update>
-					<path>/webapp</path>
-					<server>tomcat7</server>
-				</configuration>
 			</plugin>
 
 		</plugins>
