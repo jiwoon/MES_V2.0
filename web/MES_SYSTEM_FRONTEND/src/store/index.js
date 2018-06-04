@@ -7,7 +7,7 @@ import * as getters from './getters'
 Vue.use(Vuex);
 
 const state = {
-  token: '94CA11E813946F5E475BA2E6E05FD5B0',
+  token: '',
   isLoading: false,
   tableRouterApi: 'default',
   routerIn: 'table',

@@ -17,12 +17,22 @@
       <!--<div class="icon-container">-->
       <!--<div class="setting-icon"></div>-->
       <!--</div>-->
+      <div class="icon-container mt-auto" @click="logout">
+        <div class="setting-icon">
+          <icon name="power" scale="1.6" style="color: #fff;"></icon>
+        </div>
+        <span>登出</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
   import {mapGetters, mapActions} from 'vuex'
+  import {axiosFetch} from "../utils/fetchData";
+  import {logoutUrl} from "../config/globalUrl";
+  import {errHandler} from "../utils/errorHandler";
+
   export default {
     name: "SideSetting",
     data() {
@@ -31,10 +41,10 @@
       }
     },
     computed: {
-      ...mapGetters(['routerIn'])
+      ...mapGetters(['routerIn', 'token'])
     },
     methods: {
-      ...mapActions(['setTableRouter', 'setLoading']),
+      ...mapActions(['setTableRouter', 'setLoading', 'setLoginToken']),
       /*点击切换项目、路由导航*/
       initData: function (item) {
         this.toggleState(item);
@@ -50,6 +60,26 @@
         this.$router.replace({
           path: '/' + val,
         })
+      },
+      logout: function () {
+        let options = {
+          url: logoutUrl,
+          data: {
+            "#TOKEN#": this.token
+          }
+        };
+        axiosFetch(options).then(res => {
+          if (res.data.result === 200 || res.data.result === 400) {
+            this.setLoginToken('');
+            localStorage.removeItem('token');
+            this.$router.replace('/login');
+          } else {
+            errHandler(res.data.result)
+          }
+        }).catch(err => {
+          console.log(JSON.stringify(err));
+        })
+
       }
     }
   }
@@ -69,6 +99,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
   }
 
   .setting-icon {

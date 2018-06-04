@@ -18,17 +18,14 @@ const router = new Router({
     {
       path: '/_empty'
     },
-    {
-      path: '/',
-      component: test,
-      meta: {
-        requireAuth: true
-      }
-      //redirect: '/table'
-    },
+
     {
       path: '/',
       component: Main,
+      redirect: '/table',
+      meta: {
+        requireAuth: true
+      },
       children: [
         {
           path: '/table',
@@ -63,8 +60,14 @@ const router = new Router({
   ]
 })
 
+if (localStorage.getItem('token')) {
+  store.commit('setLoginToken', localStorage.getItem('token'))
+}
+
+
 router.beforeEach((to, from, next) => {
   if (to.matched.some(r => r.meta.requireAuth)) {
+    console.log("1")
     if (store.state.token) {
       next();
     } else {
