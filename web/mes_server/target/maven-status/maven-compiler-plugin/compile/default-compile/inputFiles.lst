@@ -23,5 +23,6 @@ D:\project\MES_V2.0\web\mes_server\src\main\java\com\jimi\mes_server\config\MesC
 D:\project\MES_V2.0\web\mes_server\src\main\java\com\jimi\mes_server\util\ResultUtil.java
 D:\project\MES_V2.0\web\mes_server\src\main\java\com\jimi\mes_server\service\OrderService.java
 D:\project\MES_V2.0\web\mes_server\src\main\java\com\jimi\mes_server\model\GpsUsertype.java
+D:\project\MES_V2.0\web\mes_server\src\main\java\com\jimi\mes_server\interceptor\NullValueInterceptor.java
 D:\project\MES_V2.0\web\mes_server\src\main\java\com\jimi\mes_server\model\GpsUser.java
 D:\project\MES_V2.0\web\mes_server\src\main\java\com\jimi\mes_server\exception\ParameterException.java
