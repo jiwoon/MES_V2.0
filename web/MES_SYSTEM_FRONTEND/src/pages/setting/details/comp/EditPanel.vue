@@ -47,8 +47,9 @@
 <script>
   import {mapGetters, mapActions} from 'vuex'
   import {orderOperUrl} from "../../../../config/orderApiConfig";
-  //import {editData} from "../../../../store/getters";
   import {axiosFetch} from "../../../../utils/fetchData";
+  import {errHandler} from "../../../../utils/errorHandler";
+
   export default {
     name: "EditPanel",
     //props: ['editData'],
@@ -235,7 +236,7 @@
           data: tempData
         };
         axiosFetch(options).then(res => {
-          if (res.data.result === 'succeed') {
+          if (res.data.result === 200) {
             alert('更新成功');
             this.setEditing(false);
             this.setEditData([]);
@@ -243,8 +244,10 @@
             //console.log(this.$route.url)
             this.$router.replace('/_empty')
             this.$router.replace(tempUrl)
+          }  else if (res.data.result === 400) {
+            alert('请检查格式并重试')
           } else {
-            alert('请刷新重试或者联系管理员')
+            errHandler(res.data.result)
           }
         }).catch(err => {
           alert('请求超时，请刷新重试')
@@ -260,19 +263,21 @@
           data: tempData
         };
         axiosFetch(options).then(res => {
-          if (res.data.result === 'succeed') {
+          if (res.data.result === 200) {
             alert('添加成功');
             this.setEditing(false);
             this.setCopyData([]);
             let tempUrl = this.$route.fullPath;
-            //console.log(this.$route.url)
-            this.$router.replace('/_empty')
+            this.$router.replace('/_empty');
             this.$router.replace(tempUrl)
-          } else {
+          } else if (res.data.result === 400) {
             alert('请检查格式并重试')
+          } else {
+            errHandler(res.data.result)
           }
         }).catch(err => {
-          alert('请求超时，请刷新重试')
+          console.log(JSON.stringify(err))
+          alert('请求超时，请刷新重试');
         })
       },
       btnHandler: function () {

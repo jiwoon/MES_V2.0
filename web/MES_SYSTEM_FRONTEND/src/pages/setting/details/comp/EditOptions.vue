@@ -39,6 +39,7 @@
   import {setRouterConfig, routerUrl} from "../../../../config/orderApiConfig";
   import {orderOperUrl} from "../../../../config/orderApiConfig";
   import {axiosFetch} from "../../../../utils/fetchData";
+  import {errHandler} from "../../../../utils/errorHandler";
 
   export default {
     name: "td-Options",
@@ -110,7 +111,7 @@
             }
           };
           axiosFetch(options).then(res => {
-            if (res.data.result === 'succeed') {
+            if (res.data.result === 200) {
               alert('更新成功');
               this.isStatusPanel = false;
               this.thisRow = {};
@@ -119,7 +120,7 @@
               this.$router.replace('/_empty');
               this.$router.replace(tempUrl)
             } else {
-              alert(res.data.data)
+              errHandler(res.data.result)
             }
           }).catch(err => {
             alert(err)

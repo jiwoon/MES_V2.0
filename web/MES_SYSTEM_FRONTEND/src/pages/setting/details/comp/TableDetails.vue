@@ -14,6 +14,7 @@
   import {setRouterConfig, routerUrl} from "../../../../config/orderApiConfig";
   import EditOptions from './EditOptions';
   import EditPanel from './EditPanel';
+  import {errHandler} from "../../../../utils/errorHandler";
 
   export default {
     name: "Details",
@@ -62,7 +63,7 @@
           };
           this.fetchData(options)
         } else if (route.query.data) {
-          this.fetchData(route.query)
+          this.thisFetch(route.query)
         }
 
 
@@ -97,7 +98,7 @@
           axiosFetch(options).then(response => {
             this.setLoading(false);
             this.isPending = false;
-            if (response.data.result === "succeed") {
+            if (response.data.result === 200) {
               this.srcData = response.data.data.list;
               this.data = response.data.data.list.slice(this.query.offset, this.query.offset + this.query.limit);
               this.data.map((item, index) => {
@@ -119,11 +120,12 @@
               });
               this.total = response.data.data.list.length
             } else {
-              alert("请重试");
+              errHandler(response.data.result)
             }
           })
             .catch(err => {
               this.isPending = false;
+              console.log(JSON.stringify(err));
               alert('请求超时，清刷新重试')
             })
         } else {

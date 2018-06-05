@@ -32,6 +32,8 @@
   import PageHeader from '../../components/PageHeader'
   import {axiosFetch} from "../../utils/fetchData";
   import {loginUrl} from "../../config/globalUrl";
+  import {mapActions} from "vuex";
+  import {errHandler} from "../../utils/errorHandler";
 
   export default {
     name: "Login",
@@ -41,12 +43,14 @@
     data() {
       return {
         pageHeight: 0,
-
+        isPending: false,
         loginInfos: {
-          userName: "",
-          password: "",
+          "userName": "",
+          "password": "",
+          //"#TOKEN#": ""
           //checked: false
-        }
+        },
+        token: ''
       }
     },
     mounted: function () {
@@ -54,28 +58,42 @@
       this.pageHeightCalc();
       window.onresize = () => {
         this.pageHeightCalc();
-      }
+      };
+      this.token = (localStorage.getItem('token'))
+        ? localStorage.getItem('token')
+        : '';
     },
     methods: {
+      ...mapActions(['setLoginToken']),
       pageHeightCalc: function () {
         this.pageHeight = document.body.clientHeight - 200;
       },
       /*登录处理*/
+
       loginSubmit: function () {
-        let that = this;
-        let options = {
-          url: loginUrl,
-          data: this.loginInfos
-        };
-        axiosFetch(options).then(res => {
-          if (res.data.result === 'succeed') {
-            this.$router.replace('/');
-          } else {
-            alert(res.data.data)
-          }
-        }).catch(err => {
-          alert(err);
-        })
+        if (!this.isPending) {
+          this.isPending = true;
+          let options = {
+            url: loginUrl,
+            data: this.loginInfos
+          };
+          axiosFetch(options).then(res => {
+            this.isPending = false;
+            if (res.data.result === 200) {
+              localStorage.setItem('token', res.data.data["#TOKEN#"]);
+              this.setLoginToken(localStorage.getItem('token'));
+              this.$router.replace('/');
+            } else if (res.data.result === 412) {
+              alert("请勿重复登录")
+            } else {
+              errHandler(res.data.result)
+            }
+          }).catch(err => {
+            this.isPending = false;
+            console.log(JSON.stringify(err));
+            alert(err);
+          })
+        }
       }
     }
   }

@@ -8,10 +8,10 @@
 </template>
 
 <script>
-  import Qs from 'qs'
   import {axiosFetch} from "../../../../utils/fetchData";
   import {mapGetters, mapActions} from 'vuex'
   import {setRouterConfig, routerUrl} from "../../../../config/tableApiConfig";
+  import {errHandler} from "../../../../utils/errorHandler";
 
   export default {
     name: "Details",
@@ -91,7 +91,7 @@
           axiosFetch(options).then(response => {
             this.setLoading(false);
             this.isPending = false;
-            if (response.data.result === "succeed") {
+            if (response.data.result === 200) {
               this.srcData = response.data.data.list;
               this.data = response.data.data.list.slice(this.query.offset, this.query.offset + this.query.limit);
               this.data.map((item, index) => {
@@ -99,11 +99,12 @@
               });
               this.total = response.data.data.list.length
             } else {
-              alert("请重试");
+              errHandler(response.data.result)
             }
           })
             .catch(err => {
               this.isPending = false;
+              console.log(JSON.stringify(err));
               alert('请求超时，请刷新重试')
             })
         } else {
