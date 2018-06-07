@@ -65,7 +65,6 @@
         let options = {
           url: logoutUrl,
           data: {
-            "#TOKEN#": this.token
           }
         };
         axiosFetch(options).then(res => {

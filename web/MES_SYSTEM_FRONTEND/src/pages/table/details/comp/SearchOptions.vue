@@ -19,9 +19,11 @@
       <div v-for="item in queryOptions" class="row no-gutters pl-3 pr-3">
         <component :opt="item" :is="item.type + '-comp'" :callback="thisFetch"></component>
       </div>
-
-      <div class="form-group col row align-items-end">
-        <a href="#" class="btn btn-primary ml-3" @click="thisFetch">查询</a>
+      <div class="form-group row align-items-end">
+        <a href="#" class="btn btn-secondary ml-3 mr-4" @click="initForm($store.state.tableRouterApi)">清空条件</a>
+      </div>
+      <div class="form-group row align-items-end">
+        <a href="#" class="btn btn-primary ml-3 mr-4" @click="thisFetch">查询</a>
       </div>
     </div>
   </div>
@@ -31,14 +33,16 @@
   import {mapGetters, mapActions} from 'vuex';
   import {setRouterConfig, routerUrl} from "../../../../config/tableApiConfig";
   import {axiosFetch} from "../../../../utils/fetchData";
+  import {Settings} from 'luxon'
   import {Datetime} from 'vue-datetime'
   import 'vue-datetime/dist/vue-datetime.css'
+  import _ from 'lodash'
 
   export default {
     name: "Options",
     components: {
       'text-comp': {
-        props: ['opt','callback'],
+        props: ['opt', 'callback'],
         template: '<div class="form-group col pr-3"">\n' +
         '           <label :for="opt.id">{{opt.name}}</label>\n' +
         '           <input type="text" class="form-control" :id="opt.id" v-model="opt.model" @keyup.enter="callback">\n' +
@@ -52,11 +56,11 @@
         template: '<div class="row">\n' +
         '    <div class="form-group col pr-3">\n' +
         '      <label>测试时间  从：</label>\n' +
-        '      <datetime v-model="opt.modelFrom" type="datetime"/>\n' +
+        '      <datetime v-model="opt.modelFrom" type="datetime" />\n' +
         '    </div>\n' +
         '    <div class="form-group col pr-3">\n' +
         '      <label>至：</label>\n' +
-        '      <datetime v-model="opt.modelTo" type="datetime"/>\n' +
+        '      <datetime v-model="opt.modelTo" type="datetime" />\n' +
         '    </div>\n' +
         '  </div>'
 
@@ -67,11 +71,11 @@
         pageSize: 2000,
         queryOptions: [],
         copyQueryOptions: [],
-        queryString: "",
-        test: '123'
+        queryString: ""
       }
     },
     mounted: function () {
+      Settings.defaultLocale = 'zh-CN';
       if (this.$store.state.tableRouterApi !== 'default') {
         this.initForm(this.$store.state.tableRouterApi)
       }
@@ -90,23 +94,23 @@
       ...mapActions(['setLoading']),
       initForm: function (opt) {
         let routerConfig = setRouterConfig(opt);
-        this.queryOptions = routerConfig.data.queryOptions;
+        this.queryOptions = JSON.parse(JSON.stringify(routerConfig.data.queryOptions));
       },
       createQueryString: function () {
         this.queryString = "";
-        this.copyQueryOptions = JSON.parse(JSON.stringify(this.queryOptions));
-        this.copyQueryOptions.map((item, index) => {
-          if (item.model === "" || item.modelFrom === "" || item.modelTo === "") {
-            this.copyQueryOptions.splice(index, 1)
+        this.copyQueryOptions = this.queryOptions.filter((item) => {
+          if (!(item.model === "" || item.modelFrom === "" || item.modelTo === "")) {
+            return true;
           }
         });
+
         this.copyQueryOptions.map((item, index) => {
           if (item.type === 'text') {
-            if (item.model !== "") {
+            if (_.trim(item.model) !== "") {
               if (index === 0) {
-                this.queryString += (item.id + "=" + item.model)
+                this.queryString += (item.id + "=" + _.trim(item.model))
               } else {
-                this.queryString += ("&" + item.id + "=" + item.model)
+                this.queryString += ("&" + item.id + "=" + _.trim(item.model))
               }
 
             } else {
@@ -137,10 +141,12 @@
           data: {
             table: this.$store.state.tableRouterApi,
             pageNo: 1,
-            pageSize: this.pageSize,
-            filter: this.queryString
+            pageSize: this.pageSize
           }
         };
+        if (this.queryString !== "") {
+          options.data.filter = this.queryString
+        }
         //this.setTableRouter(obj.type);
         this.$router.replace('_empty');
         this.$router.push({

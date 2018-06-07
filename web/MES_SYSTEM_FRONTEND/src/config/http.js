@@ -5,7 +5,7 @@ import store from "../store";
 import router from '../router';
 
 axios.defaults.timeout = 5000;
-axios.defaults.baseURL = 'http://10.10.11.109:8888/mes_server/';
+axios.defaults.baseURL = window.g.API_URL + '/mes_server/';
 
 axios.interceptors.request.use(
   config => {

@@ -1,6 +1,11 @@
 /*报表统一配置页面*/
-
-export const routerUrl = "http://10.10.11.109:8888/mes_server/report/select";
+let url;
+if (process.env.NODE_ENV === 'production') {
+  url = window.g.API_URL
+} else {
+  url = window.g.LOCAL_URL
+}
+export const routerUrl = url + "/mes_server/report/select";
 
 //export const routerUrl = "http://10.10.11.109:8080/mes_server/report/select";
 export const setRouterConfig = (name) => {
@@ -95,13 +100,13 @@ const ROUTER_CONFIG = {
       {field: 'showId', title: '序号', colStyle: {'width': '70px'},},
       {field: 'SN', title: 'SN号', colStyle: {'width': '260px'}},
       {field: 'IMEI', title: 'IMEI号', colStyle: {'width': '135px'}},
-      {field: 'ZhiDan', title: '制单号',  colStyle: {'width': '60px'}},
+      {field: 'ZhiDan', title: '制单号',  colStyle: {'width': '135px'}},
       {field: 'SoftModel', title: '机型',  colStyle: {'width': '120px'}},
       {field: 'Version', title: '软件版本', colStyle: {'width': '200px'}},
       {field: 'Result', title: '结果',  colStyle: {'width': '50px'}},
       {field: 'TesterId', title: '测试员',  colStyle: {'width': '70px'}},
-      {field: 'Computer', title: '地址',  colStyle: {'width': '50px'}},
-      {field: 'TestSetting', title: '测试配置',  colStyle: {'width': '80px'}},
+      {field: 'Computer', title: '地址',  colStyle: {'width': '160px'}},
+      {field: 'TestSetting', title: '测试配置',  colStyle: {'width': '400px'}},
       {field: 'TestTime', title: '测试时间', colStyle: {'width': '175px'}},
       {field: 'Remark', title: '备注',  colStyle: {'width': '50px'}}
     ]
@@ -155,26 +160,26 @@ const ROUTER_CONFIG = {
     ],
     dataColumns: [
       {field: 'showId', title:'序号', colStyle: {'width': '70px'}},
-      {field: 'BoxNo', title:'箱号', colStyle: {'width': '60px'}},
-      {field: 'IMEI', title:'IMEI号', colStyle: {'width': '60px'}},
-      {field: 'ZhiDan', title:'制单号', colStyle: {'width': '60px'}},
+      {field: 'BoxNo', title:'箱号', colStyle: {'width': '90px'}},
+      {field: 'IMEI', title:'IMEI号', colStyle: {'width': '120px'}},
+      {field: 'ZhiDan', title:'制单号', colStyle: {'width': '120px'}},
       {field: 'SoftModel', title:'机型', colStyle: {'width': '60px'}},
-      {field: 'Version', title:'软件版本', colStyle: {'width': '60px'}},
-      {field: 'ProductCode', title:'产品编号', colStyle: {'width': '60px'}},
+      {field: 'Version', title:'软件版本', colStyle: {'width': '180px'}},
+      {field: 'ProductCode', title:'产品编号', colStyle: {'width': '180px'}},
       {field: 'Color', title:'颜色', colStyle: {'width': '60px'}},
       {field: 'Qty', title:'数量', colStyle: {'width': '60px'}},
       {field: 'Weight', title:'重量', colStyle: {'width': '60px'}},
-      {field: 'Date', title:'日期', colStyle: {'width': '60px'}},
+      {field: 'Date', title:'日期', colStyle: {'width': '90px'}},
       {field: 'TACInfo', title:'前缀', colStyle: {'width': '60px'}},
       {field: 'CompanyName', title:'公司名称', colStyle: {'width': '60px'}},
       {field: 'TesterId', title:'测试员', colStyle: {'width': '60px'}},
-      {field: 'TestTime', title:'测试时间', colStyle: {'width': '60px'}},
-      {field: 'Remark1', title:'备注1', colStyle: {'width': '60px'}},
-      {field: 'Remark2', title:'备注2', colStyle: {'width': '60px'}},
-      {field: 'Remark3', title:'备注3', colStyle: {'width': '60px'}},
-      {field: 'Remark4', title:'备注4', colStyle: {'width': '60px'}},
+      {field: 'TestTime', title:'测试时间', colStyle: {'width': '120px'}},
+      {field: 'Remark1', title:'备注1', colStyle: {'width': '90px'}},
+      {field: 'Remark2', title:'备注2', colStyle: {'width': '120px'}},
+      {field: 'Remark3', title:'备注3', colStyle: {'width': '90px'}},
+      {field: 'Remark4', title:'备注4', colStyle: {'width': '400px'}},
       {field: 'Remark5', title:'备注5', colStyle: {'width': '60px'}},
-      {field: 'Computer', title:'计算机地址', colStyle: {'width': '60px'}},
+      {field: 'Computer', title:'计算机地址', colStyle: {'width': '120px'}},
     ]
   },
 

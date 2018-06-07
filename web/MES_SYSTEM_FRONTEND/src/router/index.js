@@ -67,7 +67,6 @@ if (localStorage.getItem('token')) {
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(r => r.meta.requireAuth)) {
-    console.log("1")
     if (store.state.token) {
       next();
     } else {

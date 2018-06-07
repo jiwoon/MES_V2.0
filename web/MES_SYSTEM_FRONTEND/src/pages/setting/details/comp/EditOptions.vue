@@ -45,7 +45,7 @@
     name: "td-Options",
     components: {},
     data() {
-      return{
+      return {
         isStatusPanel: false,
         thisRow: {}
       }
@@ -61,7 +61,8 @@
             let data = {
               title: item.title,
               field: item.field,
-              value: val[item.field]
+              value: val[item.field],
+              notNull: item.notNull
             };
             formData.push(data)
           }
@@ -77,7 +78,8 @@
             let data = {
               title: item.title,
               field: item.field,
-              value: val[item.field]
+              value: val[item.field],
+              notNull: item.notNull
             };
             formData.push(data)
           }
@@ -115,10 +117,12 @@
               alert('更新成功');
               this.isStatusPanel = false;
               this.thisRow = {};
-              let tempUrl = this.$route.fullPath;
+              let tempUrl = this.$route.path;
               //console.log(this.$route.url)
               this.$router.replace('/_empty');
               this.$router.replace(tempUrl)
+            } else if (res.data.result === 400) {
+              alert("只有未开始及进行中的订单可进行状态操作")
             } else {
               errHandler(res.data.result)
             }

@@ -35,6 +35,7 @@
       }
     },
     created() {
+      this.init();
       this.thisFetch(this.$route.query)
     },
     computed: {
@@ -45,6 +46,7 @@
     },
     watch: {
       $route: function (route) {
+        this.init();
         if (route.query.type){
           let options = {
             url: routerUrl,
@@ -72,6 +74,12 @@
     },
     methods: {
       ...mapActions(['setTableRouter', 'setLoading']),
+      init: function () {
+        this.data = [];
+        this.srcData = [];
+        this.columns = [];
+        this.total = 0;
+      },
       thisFetch: function (opt) {
         let options = {
           url: routerUrl,
@@ -86,6 +94,13 @@
       fetchData: function (options) {
         let routerConfig = setRouterConfig(options.data.table);
         this.columns = routerConfig.data.dataColumns;
+        if (!(options.data.table === 'Gps_OperRecord'
+          || options.data.table === 'GpsTcData'
+          || options.data.table === 'GpsSMT_TcData')){
+          options.data.descBy = 'TestTime'
+        } else if (options.data.table === 'Gps_OperRecord') {
+          options.data.descBy = 'OperTime'
+        }
         if (!this.isPending) {
           this.isPending = true;
           axiosFetch(options).then(response => {

@@ -42,6 +42,7 @@
       }
     },
     created() {
+      this.init();
       this.thisFetch(this.$route.query)
     },
     computed: {
@@ -52,6 +53,7 @@
     },
     watch: {
       $route: function (route) {
+        this.init();
         if (route.query.type) {
           let options = {
             url: routerUrl,
@@ -62,8 +64,10 @@
             }
           };
           this.fetchData(options)
-        } else if (route.query.data) {
+        } else if (!route.query.data) {
           this.thisFetch(route.query)
+        } else {
+          this.fetchData(route.query)
         }
 
 
@@ -79,6 +83,12 @@
     },
     methods: {
       ...mapActions(['setTableRouter', 'setLoading']),
+      init: function () {
+        this.data = [];
+        this.srcData = [];
+        this.columns = [];
+        this.total = 0;
+      },
       thisFetch: function (opt) {
         let options = {
           url: routerUrl,

@@ -9,14 +9,14 @@
       </div>
       <div class="form-row mb-3">
         <div class="form-group col-3">
-          <label for="edit-ZhiDan" class="col-form-label">制单号:</label>
+          <label for="edit-ZhiDan" class="col-form-label">制单号:{{formData[4].notNull === true ? '*' : ''}}</label>
           <input type="text" id="edit-ZhiDan"
                  class="form-control"
                  v-model="formData[4].value"
                  :disabled="!isCreate">
         </div>
         <div class="form-group col-3" v-if="isUpdate">
-          <label for="edit-Status" class="col-form-label">状态:</label>
+          <label for="edit-Status" class="col-form-label">状态:{{formData[3].notNull === true ? '*' : ''}}</label>
           <select id="edit-Status" class="custom-select"
                   v-model="formData[3].value" :disabled="!isCreate">
             <option value="" disabled>请选择</option>
@@ -26,19 +26,22 @@
             <option value="3">已作废</option>
           </select>
         </div>
+
       </div>
       <div class="dropdown-divider"></div>
       <div class="form-row">
         <div class="form-group col-2 mb-0" v-for="(item, index) in formData" v-if="index >= 5">
-          <label :for="'edit-' + item.field" class="col-form-label">{{item.title}}:</label>
+          <label :for="'edit-' + item.field" class="col-form-label">{{item.title}}: {{item.notNull === true ? '*' : ''}}</label>
           <input type="text" id="'edit-' + item.field" class="form-control" v-model="item.value"
                  :disabled="(!isCreate) && (formData[3].value !== 0)">
         </div>
+        <p class="form-control-sm">* 为非空项目</p>
+
       </div>
       <div class="dropdown-divider"></div>
       <div class="form-row justify-content-around">
-        <a class="btn btn-secondary col-2 text-white" @click="closePanel">取消</a>
-        <a class="btn btn-primary col-2 text-white" @click="btnHandler">提交</a>
+        <button type="button" class="btn btn-secondary col-2 text-white" @click="closePanel">取消</button>
+        <button type="button" class="btn btn-primary col-2 text-white" @click="btnHandler" :disabled="(!isCreate) && (formData[3].value !== 0)">提交</button>
       </div>
     </div>
   </div>
@@ -49,6 +52,7 @@
   import {orderOperUrl} from "../../../../config/orderApiConfig";
   import {axiosFetch} from "../../../../utils/fetchData";
   import {errHandler} from "../../../../utils/errorHandler";
+  import _ from 'lodash'
 
   export default {
     name: "EditPanel",
@@ -56,7 +60,7 @@
     data() {
       return {
         isCreate: false,
-        isUpdate: true,
+        isUpdate: false,
         formData: []
       }
     },
@@ -95,119 +99,148 @@
           }, {
             "title": "制单号",
             "field": "ZhiDan",
-            "value": ''
+            "value": '',
+            "notNull": true
           }, {
             "title": "型号",
             "field": "SoftModel",
-            "value": ''
+            "value": '',
+            "notNull": true
           }, {
             "title": "SN1",
             "field": "SN1",
-            "value": ''
+            "value": '',
+            "notNull": false
           }, {
             "title": "SN2",
             "field": "SN2",
-            "value": ''
+            "value": '',
+            "notNull": false
           }, {
             "title": "SN3",
             "field": "SN3",
-            "value": ''
+            "value": '',
+            "notNull": false
           }, {
             "title": "箱号1",
             "field": "BoxNo1",
-            "value": ''
+            "value": '',
+            "notNull": true
           }, {
             "title": "箱号2",
             "field": "BoxNo2",
-            "value": ''
+            "value": '',
+            "notNull": true
           }, {
             "title": "生产日期",
             "field": "ProductDate",
-            "value": ''
+            "value": '',
+            "notNull": true
           }, {
             "title": "颜色",
             "field": "Color",
-            "value": ''
+            "value": '',
+            "notNull": true
           }, {
             "title": "重量",
             "field": "Weight",
-            "value": ''
+            "value": '',
+            "notNull": true
           }, {
             "title": "数量",
             "field": "Qty",
-            "value": ''
+            "value": '',
+            "notNull": true
           }, {
             "title": "产品编号",
             "field": "ProductNo",
-            "value": ''
+            "value": '',
+            "notNull": true
           }, {
             "title": "版本",
             "field": "Version",
-            "value": ''
+            "value": '',
+            "notNull": true
           }, {
             "title": "起始IMEI号",
             "field": "IMEIStart",
-            "value": ''
+            "value": '',
+            "notNull": true
           }, {
             "title": "终止IMEI号",
             "field": "IMEIEnd",
-            "value": ''
+            "value": '',
+            "notNull": true
           }, {
             "title": "起始SIM卡号",
             "field": "SIMStart",
-            "value": ''
+            "value": '',
+            "notNull": false
           }, {
             "title": "终止SIM卡号",
             "field": "SIMEnd",
-            "value": ''
+            "value": '',
+            "notNull": false
           }, {
             "title": "起始BAT号",
             "field": "BATStart",
-            "value": ''
+            "value": '',
+            "notNull": false
           }, {
             "title": "终止BAT号",
             "field": "BATEnd",
-            "value": ''
+            "value": '',
+            "notNull": false
           }, {
             "title": "起始VIP号",
             "field": "VIPStart",
-            "value": ''
+            "value": '',
+            "notNull": false
           }, {
             "title": "终止VIP号",
             "field": "VIPEnd",
-            "value": ''
+            "value": '',
+            "notNull": false
           }, {
             "title": "IMEI关联",
             "field": "IMEIRel",
-            "value": ''
+            "value": '',
+            "notNull": true
           }, {
             "title": "TAC信息",
             "field": "TACInfo",
-            "value": ''
+            "value": '',
+            "notNull": true
           }, {
             "title": "公司名",
             "field": "CompanyName",
-            "value": ''
+            "value": '',
+            "notNull": false
           }, {
             "title": "备注1",
             "field": "Remark1",
-            "value": ''
+            "value": '',
+            "notNull": false
           }, {
             "title": "备注2",
             "field": "Remark2",
-            "value": ''
+            "value": '',
+            "notNull": false
           }, {
             "title": "备注3",
             "field": "Remark3",
-            "value": ''
+            "value": '',
+            "notNull": false
           }, {
             "title": "备注4",
             "field": "Remark4",
-            "value": ''
+            "value": '',
+            "notNull": false
           }, {
             "title": "备注5",
             "field": "Remark5",
-            "value": ''
+            "value": '',
+            "notNull": false
           }]
       }
     },
@@ -229,7 +262,11 @@
 
         };
         for (let i = 4; i < this.formData.length; i++) {
-          tempData[this.toLower(this.formData[i].field)] = this.formData[i].value;
+          if (_.trim(this.formData[i].value) !== "" && this.formData[i].notNull === true) {
+            tempData[this.toLower(this.formData[i].field)] = _.trim(this.formData[i].value);
+          } else {
+            tempData[this.toLower(this.formData[i].field)] = _.trim(this.formData[i].value);
+          }
         }
         let options = {
           url: orderOperUrl + '/update',
@@ -240,11 +277,11 @@
             alert('更新成功');
             this.setEditing(false);
             this.setEditData([]);
-            let tempUrl = this.$route.fullPath;
+            let tempUrl = this.$route.path;
             //console.log(this.$route.url)
             this.$router.replace('/_empty')
             this.$router.replace(tempUrl)
-          }  else if (res.data.result === 400) {
+          } else if (res.data.result === 400) {
             alert('请检查格式并重试')
           } else {
             errHandler(res.data.result)
@@ -256,8 +293,18 @@
       createData: function () {
         let tempData = {};
         for (let i = 4; i < this.formData.length; i++) {
-          tempData[this.toLower(this.formData[i].field)] = this.formData[i].value;
+          if (this.formData[i].notNull === false) {
+            if (_.trim(this.formData[i].value) !== "") {
+              tempData[this.toLower(this.formData[i].field)] = _.trim(this.formData[i].value);
+            } else {
+              alert("存在不能为空数据");
+              return
+            }
+          } else {
+            tempData[this.toLower(this.formData[i].field)] = _.trim(this.formData[i].value);
+          }
         }
+
         let options = {
           url: orderOperUrl + '/create',
           data: tempData
@@ -267,10 +314,10 @@
             alert('添加成功');
             this.setEditing(false);
             this.setCopyData([]);
-            let tempUrl = this.$route.fullPath;
+            let tempUrl = this.$route.path;
             this.$router.replace('/_empty');
             this.$router.replace(tempUrl)
-          } else if (res.data.result === 400) {
+          } else if (res.data.result === 412) {
             alert('请检查格式并重试')
           } else {
             errHandler(res.data.result)

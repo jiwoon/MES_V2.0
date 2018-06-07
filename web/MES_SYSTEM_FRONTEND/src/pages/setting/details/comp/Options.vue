@@ -19,7 +19,9 @@
       <div v-for="item in queryOptions" class="row no-gutters pl-3 pr-3">
         <component :opt="item" :is="item.type + '-comp'" :callback="thisFetch"></component>
       </div>
-
+      <div class="form-group row align-items-end">
+        <a href="#" class="btn btn-secondary ml-3 mr-4" @click="initForm('order_manage')">清空条件</a>
+      </div>
       <div class="form-group row align-items-end">
         <a href="#" class="btn btn-primary ml-3 mr-4" @click="thisFetch">查询</a>
       </div>
@@ -36,6 +38,7 @@
   import {axiosFetch} from "../../../../utils/fetchData";
   import {Datetime} from 'vue-datetime'
   import 'vue-datetime/dist/vue-datetime.css'
+  import _ from 'lodash'
 
   export default {
     name: "Options",
@@ -92,23 +95,24 @@
       ...mapActions(['setLoading','setEditing', 'setEditData']),
       initForm: function (opt) {
         let routerConfig = setRouterConfig(opt);
-        this.queryOptions = routerConfig.data.queryOptions;
+        this.queryOptions = JSON.parse(JSON.stringify(routerConfig.data.queryOptions));
       },
       createQueryString: function () {
         this.queryString = "";
-        this.copyQueryOptions = JSON.parse(JSON.stringify(this.queryOptions));
-        this.copyQueryOptions.map((item, index) => {
-          if (item.model === "" || item.modelFrom === "" || item.modelTo === "") {
-            this.copyQueryOptions.splice(index, 1)
+        this.copyQueryOptions = this.queryOptions.filter((item) => {
+          if (!(item.model === "" || item.modelFrom === "" || item.modelTo === "")) {
+            return true;
           }
         });
+
         this.copyQueryOptions.map((item, index) => {
           if (item.type === 'text') {
-            if (item.model !== "") {
+            if (_.trim(item.model) !== "") {
+
               if (index === 0) {
-                this.queryString += (item.id + "=" + item.model)
+                this.queryString += (item.id + "=" + _.trim(item.model))
               } else {
-                this.queryString += ("&" + item.id + "=" + item.model)
+                this.queryString += ("&" + item.id + "=" + _.trim(item.model))
               }
 
             } else {
@@ -139,10 +143,12 @@
           data: {
             pageNo: 1,
             pageSize: this.pageSize,
-            descBy: 'ProductDate',
-            filter: this.queryString
+            descBy: 'ProductDate'
           }
         };
+        if (this.queryString !== ""){
+          options.data.filter = this.queryString
+        }
         //this.setTableRouter(obj.type);
         this.$router.replace('/_empty');
         this.$router.push({
