@@ -64,14 +64,13 @@
       logout: function () {
         let options = {
           url: logoutUrl,
-          data: {
-          }
+          data: {}
         };
         axiosFetch(options).then(res => {
           if (res.data.result === 200 || res.data.result === 400) {
             this.setLoginToken('');
             localStorage.removeItem('token');
-            this.$router.replace('/login');
+            window.location.href = '/#/login'
           } else {
             errHandler(res.data.result)
           }

@@ -28,7 +28,7 @@ const ROUTER_CONFIG = {
       }
     ],
     dataColumns: [
-      {field: 'Id', title: '序号', visible:false},
+      {field: 'Id', title: '序号', visible: false},
       {field: 'showId', title: '序号', colStyle: {'width': '70px'}},
       {title: '操作', tdComp: 'EditOptions', colStyle: {'width': '100px'}},
       {field: 'ShowStatus', title: '状态', colStyle: {'width': '80px'}},
@@ -54,7 +54,7 @@ const ROUTER_CONFIG = {
       {field: 'BATEnd', title: '终止BAT号', colStyle: {'width': '120px'}, notNull: false},
       {field: 'VIPStart', title: '起始VIP号', colStyle: {'width': '120px'}, notNull: false},
       {field: 'VIPEnd', title: '终止VIP号', colStyle: {'width': '120px'}, notNull: false},
-      {field: 'IMEIRel', title: 'IMEI关联', colStyle: {'width': '60px'}, notNull: true},
+      {field: 'IMEIRel', title: 'IMEI关联', colStyle: {'width': '150px'}, notNull: true},
       {field: 'TACInfo', title: 'TAC信息', colStyle: {'width': '100px'}, notNull: true},
       {field: 'CompanyName', title: '公司名', colStyle: {'width': '100px'}, notNull: false},
       {field: 'Remark1', title: '备注1', colStyle: {'width': '200px'}, notNull: false},

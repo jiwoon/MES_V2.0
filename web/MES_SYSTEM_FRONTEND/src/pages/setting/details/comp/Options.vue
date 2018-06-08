@@ -7,15 +7,15 @@
       <!--<label :for="item.id">{{item.name}}</label>-->
       <!--<input type="text" class="form-control" :id="item.id" v-model="item.model">-->
       <!--</div>-->
-      <div class="form-group row no-gutters pl-3 pr-3">
-        <label for="pageSizeSelect">筛选条数：</label>
-        <select id="pageSizeSelect" class="form-control" v-model="pageSize">
-          <option value="100">100</option>
-          <option value="400">400</option>
-          <option value="2000" selected>2000</option>
-          <option value="2147483647">不限</option>
-        </select>
-      </div>
+      <!--<div class="form-group row no-gutters pl-3 pr-3">-->
+        <!--<label for="pageSizeSelect">筛选条数：</label>-->
+        <!--<select id="pageSizeSelect" class="form-control" v-model="pageSize">-->
+          <!--<option value="100">100</option>-->
+          <!--<option value="400">400</option>-->
+          <!--<option value="2000" selected>2000</option>-->
+          <!--<option value="2147483647">不限</option>-->
+        <!--</select>-->
+      <!--</div>-->
       <div v-for="item in queryOptions" class="row no-gutters pl-3 pr-3">
         <component :opt="item" :is="item.type + '-comp'" :callback="thisFetch"></component>
       </div>
@@ -70,11 +70,9 @@
     },
     data() {
       return {
-        pageSize: 2000,
         queryOptions: [],
         copyQueryOptions: [],
         queryString: "",
-        test: '123'
       }
     },
     mounted: function () {
@@ -142,7 +140,7 @@
           url: routerUrl,
           data: {
             pageNo: 1,
-            pageSize: this.pageSize,
+            pageSize: 20,
             descBy: 'ProductDate'
           }
         };

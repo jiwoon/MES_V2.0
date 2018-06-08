@@ -31,9 +31,25 @@
       <div class="dropdown-divider"></div>
       <div class="form-row">
         <div class="form-group col-2 mb-0" v-for="(item, index) in formData" v-if="index >= 5">
-          <label :for="'edit-' + item.field" class="col-form-label">{{item.title}}: {{item.notNull === true ? '*' : ''}}</label>
-          <input type="text" id="'edit-' + item.field" class="form-control" v-model="item.value"
-                 :disabled="(!isCreate) && (formData[3].value !== 0)">
+          <div v-if="index !== 25">
+            <label :for="'edit-' + item.field" class="col-form-label">{{item.title}}: {{item.notNull === true ? '*' :
+              ''}}</label>
+            <input type="text" :id="'edit-' + item.field" class="form-control" v-model="item.value"
+                   :disabled="(!isCreate) && (formData[3].value !== 0)">
+          </div>
+          <div v-if="index === 25">
+            <label :for="'edit-' + item.field" class="col-form-label">{{item.title}}: {{item.notNull === true ? '*' :
+              ''}}</label>
+            <select type="text" :id="'edit-' + item.field" class="form-control" v-model="item.value"
+                    :disabled="(!isCreate) && (formData[3].value !== 0)">
+              <option value="" disabled>请选择</option>
+              <option value="无绑定">无绑定</option>
+              <option value="与SMI卡绑定">与SMI卡绑定</option>
+              <option value="与SIM&BAT绑定">与SIM&BAT绑定</option>
+              <option value="与SIM&VIP绑定">与SIM&VIP绑定</option>
+              <option value="与BAT绑定">与BAT绑定</option>
+            </select>
+          </div>
         </div>
         <p class="form-control-sm">* 为非空项目</p>
 
@@ -41,7 +57,9 @@
       <div class="dropdown-divider"></div>
       <div class="form-row justify-content-around">
         <button type="button" class="btn btn-secondary col-2 text-white" @click="closePanel">取消</button>
-        <button type="button" class="btn btn-primary col-2 text-white" @click="btnHandler" :disabled="(!isCreate) && (formData[3].value !== 0)">提交</button>
+        <button type="button" class="btn btn-primary col-2 text-white" @click="btnHandler"
+                :disabled="(!isCreate) && (formData[3].value !== 0)">提交
+        </button>
       </div>
     </div>
   </div>
@@ -262,12 +280,36 @@
 
         };
         for (let i = 4; i < this.formData.length; i++) {
-          if (_.trim(this.formData[i].value) !== "" && this.formData[i].notNull === true) {
-            tempData[this.toLower(this.formData[i].field)] = _.trim(this.formData[i].value);
-          } else {
+          if (this.formData[i].notNull === true) {
+            if (_.trim(this.formData[i].value) !== "") {
+              tempData[this.toLower(this.formData[i].field)] = _.trim(this.formData[i].value);
+            } else {
+              alert("存在不能为空数据");
+              return
+            }
+          }
+          else {
             tempData[this.toLower(this.formData[i].field)] = _.trim(this.formData[i].value);
           }
         }
+        switch (tempData['iMEIRel']) {
+          case '无绑定':
+            tempData['iMEIRel'] = 0;
+            break;
+          case '与SMI卡绑定':
+            tempData['iMEIRel'] = 1;
+            break;
+          case '与SIM&BAT绑定':
+            tempData['iMEIRel'] = 2;
+            break;
+          case '与SIM&VIP绑定':
+            tempData['iMEIRel'] = 3;
+            break;
+          case '与BAT绑定':
+            tempData['iMEIRel'] = 4;
+            break;
+        }
+
         let options = {
           url: orderOperUrl + '/update',
           data: tempData
@@ -293,18 +335,35 @@
       createData: function () {
         let tempData = {};
         for (let i = 4; i < this.formData.length; i++) {
-          if (this.formData[i].notNull === false) {
+          if (this.formData[i].notNull === true) {
             if (_.trim(this.formData[i].value) !== "") {
               tempData[this.toLower(this.formData[i].field)] = _.trim(this.formData[i].value);
             } else {
               alert("存在不能为空数据");
               return
             }
-          } else {
+          }
+          else if (_.trim(this.formData[i].value) !== "") {
             tempData[this.toLower(this.formData[i].field)] = _.trim(this.formData[i].value);
           }
         }
-
+        switch (tempData['iMEIRel']) {
+          case '无绑定':
+            tempData['iMEIRel'] = 0;
+            break;
+          case '与SMI卡绑定':
+            tempData['iMEIRel'] = 1;
+            break;
+          case '与SIM&BAT绑定':
+            tempData['iMEIRel'] = 2;
+            break;
+          case '与SIM&VIP绑定':
+            tempData['iMEIRel'] = 3;
+            break;
+          case '与BAT绑定':
+            tempData['iMEIRel'] = 4;
+            break;
+        }
         let options = {
           url: orderOperUrl + '/create',
           data: tempData

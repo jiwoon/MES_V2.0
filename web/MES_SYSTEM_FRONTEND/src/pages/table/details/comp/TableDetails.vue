@@ -27,16 +27,18 @@
         HeaderSettings: false,
         pageSizeOptions: [20, 40, 80, 100],
         data: [],
-        srcData: [],
+        //srcData: [],
         columns: [],
         total: 0,
         query: {"limit": 20, "offset": 0},
-        isPending: false
+        isPending: false,
+        thisRouter: ''
       }
     },
     created() {
       this.init();
-      this.thisFetch(this.$route.query)
+      this.thisFetch(this.$route.query);
+      this.thisRouter = this.$route.query.type;
     },
     computed: {
       ...mapGetters([
@@ -47,24 +49,28 @@
     watch: {
       $route: function (route) {
         this.init();
-        if (route.query.type){
+        this.setLoading(true);
+        if (route.query.type) {
           let options = {
             url: routerUrl,
             data: {
               table: route.query.type,
               pageNo: 1,
-              pageSize: 2000
+              pageSize: 20
             }
           };
-          this.fetchData(options)
+          this.fetchData(options);
+          this.thisRouter = route.query.type;
         } else if (route.query.data) {
-          this.fetchData(route.query)
-        }
+          this.fetchData(route.query);
+          this.thisRouter = route.query.data.table;
 
+        }
 
       },
       query: {
         handler(query) {
+          this.setLoading(true);
           this.dataFilter(query);
         },
         deep: true
@@ -76,9 +82,11 @@
       ...mapActions(['setTableRouter', 'setLoading']),
       init: function () {
         this.data = [];
-        this.srcData = [];
+        //this.srcData = [];
         this.columns = [];
         this.total = 0;
+        this.thisRouter = '';
+        this.query = {"limit": 20, "offset": 0}
       },
       thisFetch: function (opt) {
         let options = {
@@ -86,7 +94,7 @@
           data: {
             table: opt.type,
             pageNo: 1,
-            pageSize: 2000
+            pageSize: 20
           }
         };
         this.fetchData(options)
@@ -96,7 +104,7 @@
         this.columns = routerConfig.data.dataColumns;
         if (!(options.data.table === 'Gps_OperRecord'
           || options.data.table === 'GpsTcData'
-          || options.data.table === 'GpsSMT_TcData')){
+          || options.data.table === 'GpsSMT_TcData')) {
           options.data.descBy = 'TestTime'
         } else if (options.data.table === 'Gps_OperRecord') {
           options.data.descBy = 'OperTime'
@@ -107,12 +115,13 @@
             this.setLoading(false);
             this.isPending = false;
             if (response.data.result === 200) {
-              this.srcData = response.data.data.list;
-              this.data = response.data.data.list.slice(this.query.offset, this.query.offset + this.query.limit);
+              //this.srcData = response.data.data.list;
+              //this.data = response.data.data.list.slice(this.query.offset, this.query.offset + this.query.limit);
+              this.data = response.data.data.list;
               this.data.map((item, index) => {
                 item.showId = index + 1 + this.query.offset;
               });
-              this.total = response.data.data.list.length
+              this.total = response.data.data.totalRow
             } else {
               errHandler(response.data.result)
             }
@@ -127,10 +136,19 @@
         }
       },
       dataFilter: function () {
-        this.data = this.srcData.slice(this.query.offset, this.query.offset + this.query.limit);
-        this.data.map((item, index) => {
-          item.showId = index + 1 + this.query.offset;
-        })
+        let options = {
+          url: routerUrl,
+          data: {
+            table: this.thisRouter,
+          }
+        };
+        options.data.pageNo = this.query.offset / this.query.limit + 1;
+        options.data.pageSize = this.query.limit;
+        this.fetchData(options);
+        //this.data = this.srcData.slice(this.query.offset, this.query.offset + this.query.limit);
+        // this.data.map((item, index) => {
+        //   item.showId = index + 1 + this.query.offset;
+        // })
       }
     }
   }
