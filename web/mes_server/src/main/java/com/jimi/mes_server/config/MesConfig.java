@@ -18,6 +18,7 @@ import com.jimi.mes_server.controller.UserController;
 import com.jimi.mes_server.interceptor.AccessInterceptor;
 import com.jimi.mes_server.interceptor.CORSInterceptor;
 import com.jimi.mes_server.interceptor.ErrorLogInterceptor;
+import com.jimi.mes_server.interceptor.NullValueInterceptor;
 import com.jimi.mes_server.model.MappingKit;
 import com.jimi.mes_server.util.TokenBox;
 
@@ -51,6 +52,7 @@ public class MesConfig extends JFinalConfig {
 		me.addGlobalActionInterceptor(new ErrorLogInterceptor());
 		me.addGlobalActionInterceptor(new CORSInterceptor());
 		me.addGlobalActionInterceptor(new AccessInterceptor());
+		me.addGlobalActionInterceptor(new NullValueInterceptor());
 		me.addGlobalServiceInterceptor(new Tx());
 	}
 
