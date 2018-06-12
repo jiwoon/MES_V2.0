@@ -79,7 +79,8 @@
       return {
         isCreate: false,
         isUpdate: false,
-        formData: []
+        formData: [],
+        isPending: false
       }
     },
     computed: {
@@ -274,7 +275,7 @@
         this.setEditing(false)
       },
       updateData: function () {
-
+        this.isPending = true;
         let tempData = {
           id: this.formData[0].value
 
@@ -333,6 +334,7 @@
         })
       },
       createData: function () {
+        this.isPending = true;
         let tempData = {};
         for (let i = 4; i < this.formData.length; i++) {
           if (this.formData[i].notNull === true) {
@@ -387,10 +389,14 @@
         })
       },
       btnHandler: function () {
-        if (this.isCreate) {
-          this.createData();
-        } else if (this.isUpdate) {
-          this.updateData()
+        if (!this.isPending) {
+          if (this.isCreate) {
+            this.createData();
+            this.isPending = false;
+          } else if (this.isUpdate) {
+            this.updateData();
+            this.isPending = false;
+          }
         }
       },
       toLower: function (str) {

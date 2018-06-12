@@ -10,26 +10,28 @@
     <div class="btn pl-1 pr-1" title="状态" @click="editStatus(row)">
       <icon name="menu" scale="1.8"></icon>
     </div>
-    <div class="status-panel" v-if="isStatusPanel">
-      <div class="status-panel-container form-row flex-column justify-content-between">
-        <div class="form-row">
-          <label for="status-select" class="col-form-label">状态更改:</label>
-          <select id="status-select" class="custom-select"
-                  v-model="thisRow.Status">
-            <option value="" disabled>请选择</option>
-            <option value="0">未开始</option>
-            <option value="1">进行中</option>
-            <option value="2">已完成</option>
-            <option value="3">已作废</option>
-          </select>
-        </div>
-        <div class="dropdown-divider"></div>
-        <div class="form-row justify-content-around">
-          <a class="btn btn-secondary col mr-1 text-white" @click="isStatusPanel = !isStatusPanel">取消</a>
-          <a class="btn btn-primary col ml-1 text-white" @click="statusSubmit">提交</a>
+    <transition name="fade">
+      <div class="status-panel" v-if="isStatusPanel">
+        <div class="status-panel-container form-row flex-column justify-content-between">
+          <div class="form-row">
+            <label for="status-select" class="col-form-label">状态更改:</label>
+            <select id="status-select" class="custom-select"
+                    v-model="thisRow.Status">
+              <option value="" disabled>请选择</option>
+              <option value="0">未开始</option>
+              <option value="1">进行中</option>
+              <option value="2">已完成</option>
+              <option value="3">已作废</option>
+            </select>
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class="form-row justify-content-around">
+            <a class="btn btn-secondary col mr-1 text-white" @click="isStatusPanel = !isStatusPanel">取消</a>
+            <a class="btn btn-primary col ml-1 text-white" @click="statusSubmit">提交</a>
+          </div>
         </div>
       </div>
-    </div>
+    </transition>
   </div>
 
 </template>
@@ -42,7 +44,7 @@
   import {errHandler} from "../../../../utils/errorHandler";
 
   export default {
-    name: "td-Options",
+    name: "Options",
     components: {},
     data() {
       return {
@@ -157,5 +159,11 @@
     border-radius: 10px;
     box-shadow: 3px 3px 20px 1px #bbb;
     padding: 30px 60px 10px 60px;
+  }
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
   }
 </style>
