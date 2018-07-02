@@ -1,5 +1,7 @@
 package com.jimi.mes_server.config;
 
+import java.io.File;
+
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
@@ -18,7 +20,6 @@ import com.jimi.mes_server.controller.UserController;
 import com.jimi.mes_server.interceptor.AccessInterceptor;
 import com.jimi.mes_server.interceptor.CORSInterceptor;
 import com.jimi.mes_server.interceptor.ErrorLogInterceptor;
-import com.jimi.mes_server.interceptor.NullValueInterceptor;
 import com.jimi.mes_server.model.MappingKit;
 import com.jimi.mes_server.util.TokenBox;
 
@@ -52,15 +53,22 @@ public class MesConfig extends JFinalConfig {
 		me.addGlobalActionInterceptor(new ErrorLogInterceptor());
 		me.addGlobalActionInterceptor(new CORSInterceptor());
 		me.addGlobalActionInterceptor(new AccessInterceptor());
-		me.addGlobalActionInterceptor(new NullValueInterceptor());
+//		me.addGlobalActionInterceptor(new NullValueInterceptor());
 		me.addGlobalServiceInterceptor(new Tx());
 	}
 
 	@Override
 	public void configPlugin(Plugins me) {
 		PropKit.use("properties.ini");
-		//配置数据连接池
-		DruidPlugin dp = new DruidPlugin(PropKit.get("url"), PropKit.get("user"), PropKit.get("password"));
+		//判断是否是生产环境，配置数据连接池
+		DruidPlugin dp = null;
+		if(isProductionEnvironment()) {
+			dp = new DruidPlugin(PropKit.get("p_url"), PropKit.get("p_user"), PropKit.get("p_password"));
+			System.out.println("DateBase is in production envrionment");
+		}else {
+			dp = new DruidPlugin(PropKit.get("d_url"), PropKit.get("d_user"), PropKit.get("d_password"));
+			System.out.println("DateBase is in development envrionment");
+		}
 		me.add(dp);
 		//配置ORM
 	    ActiveRecordPlugin arp = new ActiveRecordPlugin(dp);
@@ -89,6 +97,17 @@ public class MesConfig extends JFinalConfig {
 	@Override
 	public void beforeJFinalStop() {
 		TokenBox.stop();
+	}
+
+
+	public static boolean isProductionEnvironment() {
+		File[] roots = File.listRoots();
+        for (int i=0; i < roots.length; i++) {
+            if(new File(roots[i].toString() + "PRODUCTION_ENVIRONMENT_FLAG").exists()) {
+            	return true;
+            }
+        }
+        return false;
 	}
 	
 }
