@@ -297,4 +297,112 @@ public abstract class BaseGpsManuorderparam<M extends BaseGpsManuorderparam<M>> 
 		return get("_MASK_FROM_V2");
 	}
 
+	public M setJstTemplate(java.lang.String jstTemplate) {
+		set("JST_template", jstTemplate);
+		return (M)this;
+	}
+	
+	public java.lang.String getJstTemplate() {
+		return getStr("JST_template");
+	}
+
+	public M setChtTemplate1(java.lang.String chtTemplate1) {
+		set("CHT_template1", chtTemplate1);
+		return (M)this;
+	}
+	
+	public java.lang.String getChtTemplate1() {
+		return getStr("CHT_template1");
+	}
+
+	public M setChtTemplate2(java.lang.String chtTemplate2) {
+		set("CHT_template2", chtTemplate2);
+		return (M)this;
+	}
+	
+	public java.lang.String getChtTemplate2() {
+		return getStr("CHT_template2");
+	}
+
+	public M setBatPrefix(java.lang.String batPrefix) {
+		set("BAT_prefix", batPrefix);
+		return (M)this;
+	}
+	
+	public java.lang.String getBatPrefix() {
+		return getStr("BAT_prefix");
+	}
+
+	public M setBatDigits(java.lang.String batDigits) {
+		set("BAT_digits", batDigits);
+		return (M)this;
+	}
+	
+	public java.lang.String getBatDigits() {
+		return getStr("BAT_digits");
+	}
+
+	public M setSimPrefix(java.lang.String simPrefix) {
+		set("SIM_prefix", simPrefix);
+		return (M)this;
+	}
+	
+	public java.lang.String getSimPrefix() {
+		return getStr("SIM_prefix");
+	}
+
+	public M setSimDigits(java.lang.String simDigits) {
+		set("SIM_digits", simDigits);
+		return (M)this;
+	}
+	
+	public java.lang.String getSimDigits() {
+		return getStr("SIM_digits");
+	}
+
+	public M setVipPrefix(java.lang.String vipPrefix) {
+		set("VIP_prefix", vipPrefix);
+		return (M)this;
+	}
+	
+	public java.lang.String getVipPrefix() {
+		return getStr("VIP_prefix");
+	}
+
+	public M setVipDigits(java.lang.String vipDigits) {
+		set("VIP_digits", vipDigits);
+		return (M)this;
+	}
+	
+	public java.lang.String getVipDigits() {
+		return getStr("VIP_digits");
+	}
+
+	public M setIccidPrefix(java.lang.String iccidPrefix) {
+		set("ICCID_prefix", iccidPrefix);
+		return (M)this;
+	}
+	
+	public java.lang.String getIccidPrefix() {
+		return getStr("ICCID_prefix");
+	}
+
+	public M setIccidDigits(java.lang.String iccidDigits) {
+		set("ICCID_digits", iccidDigits);
+		return (M)this;
+	}
+	
+	public java.lang.String getIccidDigits() {
+		return getStr("ICCID_digits");
+	}
+
+	public M setIMEIPrints(java.lang.String IMEIPrints) {
+		set("IMEIPrints", IMEIPrints);
+		return (M)this;
+	}
+	
+	public java.lang.String getIMEIPrints() {
+		return getStr("IMEIPrints");
+	}
+
 }
