@@ -5,12 +5,12 @@ import Router from 'vue-router'
 import store from '../store'
 import Main from '../pages/Main'
 import TableMain from '../pages/table/TableMain'
-import Login from '../pages/login/Login'
+import Login from '../pages/user/Login'
 import test from '../components/test'
 import TableModule from '../pages/table/details/TableModule'
 import SettingMain from '../pages/setting/SettingMain'
 import OrderManage from '../pages/setting/details/OrderManage'
-
+import UserConfig from '../pages/user/UserConfig'
 Vue.use(Router);
 
 const router = new Router({
@@ -48,6 +48,11 @@ const router = new Router({
               component: OrderManage
             }
           ]
+        },
+        {
+          path: '/users',
+          name: 'Users',
+          component: UserConfig
         }
       ]
     },
@@ -67,7 +72,6 @@ if (localStorage.getItem('token')) {
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(r => r.meta.requireAuth)) {
-    console.log("1")
     if (store.state.token) {
       next();
     } else {

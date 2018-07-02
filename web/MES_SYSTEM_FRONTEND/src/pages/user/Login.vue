@@ -84,7 +84,10 @@
               this.setLoginToken(localStorage.getItem('token'));
               this.$router.replace('/');
             } else if (res.data.result === 412) {
-              alert("请勿重复登录")
+              alert("请检查用户名或密码")
+            } else if (res.data.result === 400) {
+              alert("请勿重复登录");
+              this.$router.replace('/table')
             } else {
               errHandler(res.data.result)
             }

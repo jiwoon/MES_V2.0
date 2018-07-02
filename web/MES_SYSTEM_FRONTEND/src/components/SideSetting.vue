@@ -17,11 +17,20 @@
       <!--<div class="icon-container">-->
       <!--<div class="setting-icon"></div>-->
       <!--</div>-->
-      <div class="icon-container mt-auto" @click="logout">
-        <div class="setting-icon">
-          <icon name="power" scale="1.6" style="color: #fff;"></icon>
+      <div class="mt-auto w-100">
+        <div class="icon-container " :class="activeItem === 'users' ? 'icon-active' : ''"
+             @click="initData('users')">
+          <div class="setting-icon">
+            <icon name="users" scale="1.6" style="color: #fff;"></icon>
+          </div>
+          <span>用户</span>
         </div>
-        <span>登出</span>
+        <div class="icon-container" @click="logout">
+          <div class="setting-icon">
+            <icon name="power" scale="1.6" style="color: #fff;"></icon>
+          </div>
+          <span>登出</span>
+        </div>
       </div>
     </div>
   </div>
@@ -38,6 +47,17 @@
     data() {
       return {
         activeItem: 'table' //活动项目
+      }
+    },
+    watch: {
+      // $route: function (val) {
+      //   console.log(val.path)
+      //   //this.activeItem = val.path
+      // }
+    },
+    mounted() {
+      if (this.$route.path !== '/') {
+        this.activeItem = this.$route.path.slice(1)
       }
     },
     computed: {
@@ -64,15 +84,13 @@
       logout: function () {
         let options = {
           url: logoutUrl,
-          data: {
-            "#TOKEN#": this.token
-          }
+          data: {}
         };
         axiosFetch(options).then(res => {
           if (res.data.result === 200 || res.data.result === 400) {
             this.setLoginToken('');
             localStorage.removeItem('token');
-            this.$router.replace('/login');
+            window.location.href = '/#/login'
           } else {
             errHandler(res.data.result)
           }
