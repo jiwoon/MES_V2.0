@@ -1,0 +1,12 @@
+F:\C#打印\WindowsForms_print\WindowsForms_print\bin\Release\WindowsForms_print.exe.config
+F:\C#打印\WindowsForms_print\WindowsForms_print\bin\Release\WindowsForms_print.exe
+F:\C#打印\WindowsForms_print\WindowsForms_print\bin\Release\WindowsForms_print.pdb
+F:\C#打印\WindowsForms_print\WindowsForms_print\bin\Release\Seagull.BarTender.Print.dll
+F:\C#打印\WindowsForms_print\WindowsForms_print\bin\Release\Seagull.BarTender.Print.xml
+F:\C#打印\WindowsForms_print\WindowsForms_print\obj\Release\WindowsForms_print.Form1.resources
+F:\C#打印\WindowsForms_print\WindowsForms_print\obj\Release\WindowsForms_print.Properties.Resources.resources
+F:\C#打印\WindowsForms_print\WindowsForms_print\obj\Release\WindowsForms_print.csproj.GenerateResource.cache
+F:\C#打印\WindowsForms_print\WindowsForms_print\obj\Release\WindowsForms_print.csproj.CoreCompileInputs.cache
+F:\C#打印\WindowsForms_print\WindowsForms_print\obj\Release\WindowsForms_print.csproj.CopyComplete
+F:\C#打印\WindowsForms_print\WindowsForms_print\obj\Release\WindowsForms_print.exe
+F:\C#打印\WindowsForms_print\WindowsForms_print\obj\Release\WindowsForms_print.pdb
