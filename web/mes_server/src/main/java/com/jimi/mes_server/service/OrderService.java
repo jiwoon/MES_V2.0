@@ -1,5 +1,7 @@
 package com.jimi.mes_server.service;
 
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 import com.jimi.mes_server.exception.ParameterException;
 import com.jimi.mes_server.model.GpsManuorderparam;
 import com.jimi.mes_server.service.base.SelectService;
@@ -23,8 +25,12 @@ public class OrderService extends SelectService{
 	}
 	
 	
-	public boolean create(GpsManuorderparam order) {
-		order.setStatus(0);
+	public boolean create(GpsManuorderparam order) {	    
+	    order.setStatus(0);
+	    Record orderInDb = Db.findFirst("select * from Gps_ManuOrderParam where ZhiDan = ?", order.getZhiDan());
+        if(orderInDb != null) {
+            throw new ParameterException("only create the order one time");
+        }	    
 		return order.save();
 	}
 	
