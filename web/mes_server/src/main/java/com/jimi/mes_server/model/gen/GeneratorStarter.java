@@ -16,9 +16,9 @@ public class GeneratorStarter {
 	 */
 	public static void main(String[] args) {
 		PropKit.use("properties.ini");
-		String url = PropKit.get("url");
-		String user = PropKit.get("user");
-		String password = PropKit.get("password");
+		String url = PropKit.get("d_url");
+		String user = PropKit.get("d_user");
+		String password = PropKit.get("d_password");
 		// base model 所使用的包名
 		String baseModelPkg = PropKit.get("baseModelPackage");
 		// base model 文件保存路径
