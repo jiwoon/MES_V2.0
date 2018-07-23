@@ -40,8 +40,9 @@ public class UserController extends Controller  {
 				throw new ParameterException("do not login again");
 			}
 		}
-		user.put(TokenBox.TOKEN_ID_KEY_NAME, TokenBox.createTokenId());
-		TokenBox.put(TokenBox.createTokenId(), SESSION_KEY_LOGIN_USER, user);
+		tokenId = TokenBox.createTokenId();
+		user.put(TokenBox.TOKEN_ID_KEY_NAME, tokenId);
+		TokenBox.put(tokenId, SESSION_KEY_LOGIN_USER, user);
 		renderJson(ResultUtil.succeed(user));
 	}
 	
